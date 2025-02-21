@@ -33,6 +33,9 @@ export class Academico {
   @Column({ type: 'varchar', length: 255 })
   senha: string;
 
+  @Column({ type: 'varchar', length: 10 })
+  status: string;
+
   @OneToOne(() => Candidaturas, (candidatura) => candidatura.academico)
   candidatura: Candidaturas;
 

@@ -14,6 +14,9 @@ export class Usuario {
   @Column({ type: 'varchar', length: 20 })
   tipo: string;
 
+  @Column({ type: 'varchar', length: 10 })
+  status: string;
+
   constructor(usuario: string, senha: string, tipo: string) {
     this.usuario = usuario;
     this.senha = senha;

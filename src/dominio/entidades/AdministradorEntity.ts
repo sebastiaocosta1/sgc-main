@@ -20,6 +20,9 @@ export class Administrador {
   @Column({ type: 'varchar', length: 255 })
   senha: string;
 
+  @Column({ type: 'varchar', length: 10 })
+  status: string;
+
   constructor(
     nomeCompleto: string,
     cpf: string,

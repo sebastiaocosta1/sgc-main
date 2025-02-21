@@ -20,6 +20,9 @@ export class Endereco {
   @Column()
   numero: string;
 
+  @Column({ type: 'varchar', length: 10 })
+  status: string;
+
   constructor(cep: string, cidade: string, estado: string, rua: string, numero: string) {
     this.cep = cep;
     this.cidade = cidade;
