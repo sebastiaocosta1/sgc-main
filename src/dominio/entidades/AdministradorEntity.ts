@@ -17,23 +17,27 @@ export class Administrador {
   @Column({ type: 'varchar', length: 50, unique: true })
   usuario: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  senha: string;
-
   @Column({ type: 'varchar', length: 10 })
   status: string;
+
+  @Column({ type: 'varchar', length: 255 })
+  senha: string;
 
   constructor(
     nomeCompleto: string,
     cpf: string,
     cargo: string,
     usuario: string,
+    status: string,
     senha: string
+    
+  
   ) {
     this.nomeCompleto = nomeCompleto;
     this.cpf = cpf;
     this.cargo = cargo;
     this.usuario = usuario;
-    this.senha = senha;
+    this.status = status;
+    this.senha = senha;    
   }
 }

@@ -43,17 +43,18 @@ var AcademicoController = /** @class */ (function () {
     }
     AcademicoController.prototype.criaAcademico = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, senha, novoAcademico, error_1;
+            var _a, nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, status_1, senha, novoAcademico, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
-                        _a = req.body, nome = _a.nome, idade = _a.idade, email = _a.email, telefone = _a.telefone, hardskills = _a.hardskills, softskills = _a.softskills, matricula = _a.matricula, curriculo = _a.curriculo, senha = _a.senha;
-                        if (!nome || !idade || !email || !telefone || !hardskills || !softskills || !matricula || !senha) {
+                        _a = req.body, nome = _a.nome, idade = _a.idade, email = _a.email, telefone = _a.telefone, hardskills = _a.hardskills, softskills = _a.softskills, matricula = _a.matricula, curriculo = _a.curriculo, status_1 = _a.status, senha = _a.senha;
+                        console.log(req.body);
+                        if (!nome || !idade || !email || !telefone || !hardskills || !softskills || !matricula || !status_1 || !senha) {
                             res.status(400).json({ message: "Todos os campos obrigatórios devem ser preenchidos." });
                             return [2 /*return*/];
                         }
-                        novoAcademico = new AcademicoEntity_1.Academico(nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, senha);
+                        novoAcademico = new AcademicoEntity_1.Academico(nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, status_1, senha);
                         return [4 /*yield*/, this.repository.criaAcademico(novoAcademico)];
                     case 1:
                         _b.sent();

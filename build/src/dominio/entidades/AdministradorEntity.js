@@ -12,11 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Administrador = void 0;
 var typeorm_1 = require("typeorm");
 var Administrador = /** @class */ (function () {
-    function Administrador(nomeCompleto, cpf, cargo, usuario, senha) {
+    function Administrador(nomeCompleto, cpf, cargo, usuario, status, senha) {
         this.nomeCompleto = nomeCompleto;
         this.cpf = cpf;
         this.cargo = cargo;
         this.usuario = usuario;
+        this.status = status;
         this.senha = senha;
     }
     __decorate([
@@ -40,12 +41,16 @@ var Administrador = /** @class */ (function () {
         __metadata("design:type", String)
     ], Administrador.prototype, "usuario", void 0);
     __decorate([
+        (0, typeorm_1.Column)({ type: 'varchar', length: 10 }),
+        __metadata("design:type", String)
+    ], Administrador.prototype, "status", void 0);
+    __decorate([
         (0, typeorm_1.Column)({ type: 'varchar', length: 255 }),
         __metadata("design:type", String)
     ], Administrador.prototype, "senha", void 0);
     Administrador = __decorate([
         (0, typeorm_1.Entity)(),
-        __metadata("design:paramtypes", [String, String, String, String, String])
+        __metadata("design:paramtypes", [String, String, String, String, String, String])
     ], Administrador);
     return Administrador;
 }());

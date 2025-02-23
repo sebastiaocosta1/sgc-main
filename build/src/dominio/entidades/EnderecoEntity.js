@@ -43,6 +43,10 @@ var Endereco = /** @class */ (function () {
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], Endereco.prototype, "numero", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({ type: 'varchar', length: 10 }),
+        __metadata("design:type", String)
+    ], Endereco.prototype, "status", void 0);
     Endereco = __decorate([
         (0, typeorm_1.Entity)("enderecos"),
         __metadata("design:paramtypes", [String, String, String, String, String])

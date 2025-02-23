@@ -8,17 +8,16 @@ export default class AdministradorController {
    
     async criaAdministrador(req: Request, res: Response): Promise<void> {
         try {
-            const { nomeCompleto, cpf, cargo, usuario, senha } = <Administrador>req.body;
+            const { nomeCompleto, cpf, cargo, usuario, status, senha} = <Administrador>req.body;
            
-            if (!nomeCompleto || !cpf || !cargo || !usuario || !senha) {
+            if (!nomeCompleto || !cpf || !cargo || !usuario || !status || !senha ) {
                 res.status(400).json({ message: "Todos os campos são obrigatórios." });
                 return;
             }
             
             const senhaHash = await bcrypt.hash(senha, 10);            
-            const novoAdministrador = new Administrador(nomeCompleto, cpf, cargo, usuario, senhaHash);
+            const novoAdministrador = new Administrador(nomeCompleto, cpf, cargo, usuario, status, senhaHash);
             
-
             await this.repository.criaAdministrador(novoAdministrador);
 
             res.status(201).json(novoAdministrador);
@@ -28,8 +27,7 @@ export default class AdministradorController {
             res.status(500).json({ message: "Erro interno do servidor." });
         }
     }
-
-    // Listar todos os administradores
+    
     async listaAdministradores(req: Request, res: Response): Promise<void> {
         try {
             const administradores = await this.repository.listaAdministradores();
@@ -63,7 +61,7 @@ export default class AdministradorController {
     async atualizaAdministrador(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            const { nomeCompleto, cpf, cargo, usuario, senha } = req.body as Administrador;
+            const { nomeCompleto, cpf, cargo, usuario, status, senha } = req.body as Administrador;
 
             // Hash da nova senha, caso fornecida
             const senhaHash = senha ? await bcrypt.hash(senha, 10) : undefined;
@@ -73,7 +71,9 @@ export default class AdministradorController {
                 cpf,
                 cargo,
                 usuario,
+                status,
                 ...(senhaHash && { senha: senhaHash }),
+                
             };
 
             const { success, message } = await this.repository.atualizaAdministrador(

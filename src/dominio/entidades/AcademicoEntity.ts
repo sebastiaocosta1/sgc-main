@@ -29,12 +29,12 @@ export class Academico {
 
   @Column({ type: 'text', nullable: true })
   curriculo: string;
+  
+  @Column({ type: 'varchar', length: 10 })
+  status: string;
 
   @Column({ type: 'varchar', length: 255 })
   senha: string;
-
-  @Column({ type: 'varchar', length: 10 })
-  status: string;
 
   @OneToOne(() => Candidaturas, (candidatura) => candidatura.academico)
   candidatura: Candidaturas;
@@ -48,8 +48,9 @@ export class Academico {
     softskills: string,
     matricula: string,
     curriculo: string,
-    senha: string,
-    candidatura?: Candidaturas
+    status: string,
+    senha: string,    
+    candidatura?: Candidaturas,    
   ) {
     this.nome = nome;
     this.idade = idade;
@@ -59,7 +60,8 @@ export class Academico {
     this.softskills = softskills;
     this.matricula = matricula;
     this.curriculo = curriculo;
-    this.senha = senha;
-    this.candidatura = candidatura || null;
+    this.status = status;
+    this.senha = senha;    
+    this.candidatura = candidatura || null;    
   }
 }

@@ -8,15 +8,15 @@ export default class UsuarioController {
    
     async criaUsuario(req: Request, res: Response): Promise<void> {
         try {
-            const { usuario, senha, tipo } = <Usuario>req.body;
+            const { usuario, senha, tipo, status } = <Usuario>req.body;
            
-            if (!usuario || !senha || !tipo) {
+            if (!usuario || !senha || !tipo || !status) {
                 res.status(400).json({ message: "Todos os campos são obrigatórios." });
                 return;
             }
             
             const senhaHash = await bcrypt.hash(senha, 10);            
-            const novoUsuario = new Usuario(usuario, senhaHash, tipo);
+            const novoUsuario = new Usuario(usuario, senhaHash, tipo, status);
 
             await this.repository.criaUsuario(novoUsuario);
             res.status(201).json(novoUsuario);

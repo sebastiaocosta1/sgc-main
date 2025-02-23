@@ -12,10 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Usuario = void 0;
 var typeorm_1 = require("typeorm");
 var Usuario = /** @class */ (function () {
-    function Usuario(usuario, senha, tipo) {
+    function Usuario(usuario, senha, tipo, status) {
         this.usuario = usuario;
         this.senha = senha;
         this.tipo = tipo;
+        this.status = status;
     }
     __decorate([
         (0, typeorm_1.PrimaryGeneratedColumn)({ name: 'idusuario' }),
@@ -33,9 +34,13 @@ var Usuario = /** @class */ (function () {
         (0, typeorm_1.Column)({ type: 'varchar', length: 20 }),
         __metadata("design:type", String)
     ], Usuario.prototype, "tipo", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({ type: 'varchar', length: 10 }),
+        __metadata("design:type", String)
+    ], Usuario.prototype, "status", void 0);
     Usuario = __decorate([
         (0, typeorm_1.Entity)(),
-        __metadata("design:paramtypes", [String, String, String])
+        __metadata("design:paramtypes", [String, String, String, String])
     ], Usuario);
     return Usuario;
 }());

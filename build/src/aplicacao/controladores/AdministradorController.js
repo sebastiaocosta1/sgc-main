@@ -58,20 +58,20 @@ var AdministradorController = /** @class */ (function () {
     }
     AdministradorController.prototype.criaAdministrador = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, nomeCompleto, cpf, cargo, usuario, senha, senhaHash, novoAdministrador, error_1;
+            var _a, nomeCompleto, cpf, cargo, usuario, status_1, senha, senhaHash, novoAdministrador, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 3, , 4]);
-                        _a = req.body, nomeCompleto = _a.nomeCompleto, cpf = _a.cpf, cargo = _a.cargo, usuario = _a.usuario, senha = _a.senha;
-                        if (!nomeCompleto || !cpf || !cargo || !usuario || !senha) {
+                        _a = req.body, nomeCompleto = _a.nomeCompleto, cpf = _a.cpf, cargo = _a.cargo, usuario = _a.usuario, status_1 = _a.status, senha = _a.senha;
+                        if (!nomeCompleto || !cpf || !cargo || !usuario || !status_1 || !senha) {
                             res.status(400).json({ message: "Todos os campos são obrigatórios." });
                             return [2 /*return*/];
                         }
                         return [4 /*yield*/, bcrypt_1.default.hash(senha, 10)];
                     case 1:
                         senhaHash = _b.sent();
-                        novoAdministrador = new AdministradorEntity_1.Administrador(nomeCompleto, cpf, cargo, usuario, senhaHash);
+                        novoAdministrador = new AdministradorEntity_1.Administrador(nomeCompleto, cpf, cargo, usuario, status_1, senhaHash);
                         return [4 /*yield*/, this.repository.criaAdministrador(novoAdministrador)];
                     case 2:
                         _b.sent();
@@ -87,7 +87,6 @@ var AdministradorController = /** @class */ (function () {
             });
         });
     };
-    // Listar todos os administradores
     AdministradorController.prototype.listaAdministradores = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var administradores, error_2;
@@ -142,13 +141,13 @@ var AdministradorController = /** @class */ (function () {
     // Atualizar dados de um administrador
     AdministradorController.prototype.atualizaAdministrador = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, _a, nomeCompleto, cpf, cargo, usuario, senha, senhaHash, _b, dadosAtualizados, _c, success, message, error_4;
+            var id, _a, nomeCompleto, cpf, cargo, usuario, status_2, senha, senhaHash, _b, dadosAtualizados, _c, success, message, error_4;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
                         _d.trys.push([0, 5, , 6]);
                         id = req.params.id;
-                        _a = req.body, nomeCompleto = _a.nomeCompleto, cpf = _a.cpf, cargo = _a.cargo, usuario = _a.usuario, senha = _a.senha;
+                        _a = req.body, nomeCompleto = _a.nomeCompleto, cpf = _a.cpf, cargo = _a.cargo, usuario = _a.usuario, status_2 = _a.status, senha = _a.senha;
                         if (!senha) return [3 /*break*/, 2];
                         return [4 /*yield*/, bcrypt_1.default.hash(senha, 10)];
                     case 1:
@@ -159,7 +158,7 @@ var AdministradorController = /** @class */ (function () {
                         _d.label = 3;
                     case 3:
                         senhaHash = _b;
-                        dadosAtualizados = __assign({ nomeCompleto: nomeCompleto, cpf: cpf, cargo: cargo, usuario: usuario }, (senhaHash && { senha: senhaHash }));
+                        dadosAtualizados = __assign({ nomeCompleto: nomeCompleto, cpf: cpf, cargo: cargo, usuario: usuario, status: status_2 }, (senhaHash && { senha: senhaHash }));
                         return [4 /*yield*/, this.repository.atualizaAdministrador(Number(id), dadosAtualizados)];
                     case 4:
                         _c = _d.sent(), success = _c.success, message = _c.message;

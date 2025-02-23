@@ -17,9 +17,10 @@ export class Usuario {
   @Column({ type: 'varchar', length: 10 })
   status: string;
 
-  constructor(usuario: string, senha: string, tipo: string) {
+  constructor(usuario: string, senha: string, tipo: string, status: string) {
     this.usuario = usuario;
     this.senha = senha;
     this.tipo = tipo;
+    this.status = status;
   }
 }

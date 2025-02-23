@@ -58,20 +58,20 @@ var UsuarioController = /** @class */ (function () {
     }
     UsuarioController.prototype.criaUsuario = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, usuario, senha, tipo, senhaHash, novoUsuario, error_1;
+            var _a, usuario, senha, tipo, status_1, senhaHash, novoUsuario, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 3, , 4]);
-                        _a = req.body, usuario = _a.usuario, senha = _a.senha, tipo = _a.tipo;
-                        if (!usuario || !senha || !tipo) {
+                        _a = req.body, usuario = _a.usuario, senha = _a.senha, tipo = _a.tipo, status_1 = _a.status;
+                        if (!usuario || !senha || !tipo || !status_1) {
                             res.status(400).json({ message: "Todos os campos são obrigatórios." });
                             return [2 /*return*/];
                         }
                         return [4 /*yield*/, bcrypt_1.default.hash(senha, 10)];
                     case 1:
                         senhaHash = _b.sent();
-                        novoUsuario = new UsuarioEntity_1.Usuario(usuario, senhaHash, tipo);
+                        novoUsuario = new UsuarioEntity_1.Usuario(usuario, senhaHash, tipo, status_1);
                         return [4 /*yield*/, this.repository.criaUsuario(novoUsuario)];
                     case 2:
                         _b.sent();

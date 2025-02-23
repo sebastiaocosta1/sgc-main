@@ -13,7 +13,7 @@ exports.Academico = void 0;
 var typeorm_1 = require("typeorm");
 var CandidaturaEntity_1 = require("./CandidaturaEntity");
 var Academico = /** @class */ (function () {
-    function Academico(nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, senha, candidatura) {
+    function Academico(nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, status, senha, candidatura) {
         this.nome = nome;
         this.idade = idade;
         this.email = email;
@@ -22,6 +22,7 @@ var Academico = /** @class */ (function () {
         this.softskills = softskills;
         this.matricula = matricula;
         this.curriculo = curriculo;
+        this.status = status;
         this.senha = senha;
         this.candidatura = candidatura || null;
     }
@@ -62,6 +63,10 @@ var Academico = /** @class */ (function () {
         __metadata("design:type", String)
     ], Academico.prototype, "curriculo", void 0);
     __decorate([
+        (0, typeorm_1.Column)({ type: 'varchar', length: 10 }),
+        __metadata("design:type", String)
+    ], Academico.prototype, "status", void 0);
+    __decorate([
         (0, typeorm_1.Column)({ type: 'varchar', length: 255 }),
         __metadata("design:type", String)
     ], Academico.prototype, "senha", void 0);
@@ -71,7 +76,7 @@ var Academico = /** @class */ (function () {
     ], Academico.prototype, "candidatura", void 0);
     Academico = __decorate([
         (0, typeorm_1.Entity)(),
-        __metadata("design:paramtypes", [String, Number, String, String, String, String, String, String, String, CandidaturaEntity_1.Candidaturas])
+        __metadata("design:paramtypes", [String, Number, String, String, String, String, String, String, String, String, CandidaturaEntity_1.Candidaturas])
     ], Academico);
     return Academico;
 }());
