@@ -7,16 +7,16 @@ export default class EnderecoController {
 
     async criaEndereco(req: Request, res: Response): Promise<void> {
         try {
-            const { rua, numero,   estado, cidade,  cep } = <Endereco>req.body;
+            const { cep, cidade,   estado, rua,  numero, status } = <Endereco>req.body;
 
             //console.log(<Endereco>req.body)
 
-            if (!rua || !numero || !cidade || !estado || !cep) {
+            if (!cep || !cidade || !estado || !rua || !numero || !status) {
                 res.status(400).json({ message: "Todos os campos são obrigatórios." });
                 return;
             }
 
-            const novoEndereco = new Endereco(rua, numero,   estado, cidade,  cep);
+            const novoEndereco = new Endereco(cep, cidade,   estado, rua,  numero, status);
             await this.repository.criaEndereco(novoEndereco);
 
             res.status(201).json(novoEndereco);
@@ -56,9 +56,9 @@ export default class EnderecoController {
     async atualizaEndereco(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            const { rua, numero, cidade, estado, cep } = req.body as Endereco;
+            const { cep, cidade,   estado, rua,  numero, status } = req.body as Endereco;
 
-            const dadosAtualizados = { rua, numero, cidade, estado, cep };
+            const dadosAtualizados = { cep, cidade,   estado, rua,  numero, status };
 
             const { success, message } = await this.repository.atualizaEndereco(
                 Number(id),

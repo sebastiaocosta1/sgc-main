@@ -9,17 +9,28 @@ import { Candidaturas } from "../../dominio/entidades/CandidaturaEntity";
 import { Usuario } from "../../dominio/entidades/UsuarioEntity";
 import { Entrevista } from "../../dominio/entidades/EntrevistaEntity";
 import { Login } from "../../dominio/entidades/LoginEntity";
-//require('dotenv').config();
+require('dotenv').config();
+
+// export const AppDataSource = new DataSource({
+//     type: 'postgres',
+//     host: 'localhost',
+//     port: 5432,
+//     username: 'postgres',
+//     password: 'aluno',
+//     database: 'db_sgc',
+//     entities: [Endereco, Administrador, Academico, Vagas, Empresa, Contratacoes, Candidaturas, Usuario, Entrevista, Login],
+//     synchronize: true, 
+//     logging: false,
+// });
 
 export const AppDataSource = new DataSource({
-    type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: 'postgres',
-    password: 'aluno',
-    database: 'db_sgc',
+    type: "postgres",
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT),
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     entities: [Endereco, Administrador, Academico, Vagas, Empresa, Contratacoes, Candidaturas, Usuario, Entrevista, Login],
     synchronize: true, 
     logging: false,
 });
-

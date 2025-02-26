@@ -39,7 +39,7 @@ export default class AdministradorController {
         }
     }
 
-    // Listar um administrador por ID
+    
     async listaAdministrador(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;

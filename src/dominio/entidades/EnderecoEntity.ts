@@ -23,11 +23,12 @@ export class Endereco {
   @Column({ type: 'varchar', length: 10 })
   status: string;
 
-  constructor(cep: string, cidade: string, estado: string, rua: string, numero: string) {
+  constructor(cep: string, cidade: string, estado: string, rua: string, numero: string, status: string) {
     this.cep = cep;
     this.cidade = cidade;
     this.estado = estado;
     this.rua = rua;
     this.numero = numero;
+    this.status = status;
   }
 }

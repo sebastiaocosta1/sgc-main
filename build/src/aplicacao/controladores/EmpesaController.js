@@ -50,36 +50,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var AdministradorEntity_1 = require("../../dominio/entidades/AdministradorEntity");
+var EmpresaEntity_1 = require("../../dominio/entidades/EmpresaEntity");
 var bcrypt_1 = __importDefault(require("bcrypt"));
-var AdministradorController = /** @class */ (function () {
-    function AdministradorController(repository) {
+var EmpresaController = /** @class */ (function () {
+    function EmpresaController(repository) {
         this.repository = repository;
     }
-    AdministradorController.prototype.criaAdministrador = function (req, res) {
+    EmpresaController.prototype.criaEmpresa = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, nomeCompleto, cpf, cargo, usuario, status_1, senha, senhaHash, novoAdministrador, error_1;
+            var _a, cnpj, inscricaoEstadual, inscricaoMunicipal, nomeFantasia, razaoSocial, telefoneComercial, nomeResponsavelLegal, telefoneResponsavelLegal, emailResponsavelLegal, dataCadastramento, status_1, senha, endereco, senhaHash, novaEmpresa, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 3, , 4]);
-                        _a = req.body, nomeCompleto = _a.nomeCompleto, cpf = _a.cpf, cargo = _a.cargo, usuario = _a.usuario, status_1 = _a.status, senha = _a.senha;
-                        if (!nomeCompleto || !cpf || !cargo || !usuario || !status_1 || !senha) {
-                            res.status(400).json({ message: "Todos os campos são obrigatórios." });
+                        _a = req.body, cnpj = _a.cnpj, inscricaoEstadual = _a.inscricaoEstadual, inscricaoMunicipal = _a.inscricaoMunicipal, nomeFantasia = _a.nomeFantasia, razaoSocial = _a.razaoSocial, telefoneComercial = _a.telefoneComercial, nomeResponsavelLegal = _a.nomeResponsavelLegal, telefoneResponsavelLegal = _a.telefoneResponsavelLegal, emailResponsavelLegal = _a.emailResponsavelLegal, dataCadastramento = _a.dataCadastramento, status_1 = _a.status, senha = _a.senha, endereco = _a.endereco;
+                        // Validação dos campos obrigatórios
+                        if (!cnpj ||
+                            !nomeFantasia ||
+                            !razaoSocial ||
+                            !telefoneComercial ||
+                            !nomeResponsavelLegal ||
+                            !telefoneResponsavelLegal ||
+                            !emailResponsavelLegal ||
+                            !dataCadastramento ||
+                            !status_1 ||
+                            !senha ||
+                            !endereco) {
+                            res.status(400).json({ message: "Todos os campos obrigatórios devem ser fornecidos." });
                             return [2 /*return*/];
                         }
                         return [4 /*yield*/, bcrypt_1.default.hash(senha, 10)];
                     case 1:
                         senhaHash = _b.sent();
-                        novoAdministrador = new AdministradorEntity_1.Administrador(nomeCompleto, cpf, cargo, usuario, status_1, senhaHash);
-                        return [4 /*yield*/, this.repository.criaAdministrador(novoAdministrador)];
+                        novaEmpresa = new EmpresaEntity_1.Empresa(cnpj, inscricaoEstadual, inscricaoMunicipal, nomeFantasia, razaoSocial, telefoneComercial, nomeResponsavelLegal, telefoneResponsavelLegal, emailResponsavelLegal, new Date(dataCadastramento), status_1, senhaHash, endereco);
+                        return [4 /*yield*/, this.repository.criaEmpresa(novaEmpresa)];
                     case 2:
                         _b.sent();
-                        res.status(201).json(novoAdministrador);
+                        res.status(201).json(novaEmpresa);
                         return [3 /*break*/, 4];
                     case 3:
                         error_1 = _b.sent();
-                        console.error("Erro ao criar administrador:", error_1);
+                        console.error("Erro ao criar empresa:", error_1);
                         res.status(500).json({ message: "Erro interno do servidor." });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
@@ -87,22 +98,21 @@ var AdministradorController = /** @class */ (function () {
             });
         });
     };
-    AdministradorController.prototype.listaAdministradores = function (req, res) {
+    EmpresaController.prototype.listaEmpresas = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var administradores, error_2;
+            var empresas, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.repository.listaAdministradores()];
+                        return [4 /*yield*/, this.repository.listaEmpresas()];
                     case 1:
-                        administradores = _a.sent();
-                        res.status(200).json(administradores);
+                        empresas = _a.sent();
+                        res.status(200).json(empresas);
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _a.sent();
-                        console.log("teste");
-                        console.error("Erro ao listar administradores:", error_2);
+                        console.error("Erro ao listar empresas:", error_2);
                         res.status(500).json({ message: "Erro interno do servidor." });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -110,26 +120,26 @@ var AdministradorController = /** @class */ (function () {
             });
         });
     };
-    AdministradorController.prototype.listaAdministrador = function (req, res) {
+    EmpresaController.prototype.listaEmpresa = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, administrador, error_3;
+            var id, empresa, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         id = req.params.id;
-                        return [4 /*yield*/, this.repository.listaAdministrador(Number(id))];
+                        return [4 /*yield*/, this.repository.listaEmpresa(Number(id))];
                     case 1:
-                        administrador = _a.sent();
-                        if (!administrador) {
-                            res.status(404).json({ message: "Administrador não encontrado." });
+                        empresa = _a.sent();
+                        if (!empresa) {
+                            res.status(404).json({ message: "Empresa não encontrada." });
                             return [2 /*return*/];
                         }
-                        res.status(200).json(administrador);
+                        res.status(200).json(empresa);
                         return [3 /*break*/, 3];
                     case 2:
                         error_3 = _a.sent();
-                        console.error("Erro ao buscar administrador:", error_3);
+                        console.error("Erro ao buscar empresa:", error_3);
                         res.status(500).json({ message: "Erro interno do servidor." });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -137,16 +147,15 @@ var AdministradorController = /** @class */ (function () {
             });
         });
     };
-    // Atualizar dados de um administrador
-    AdministradorController.prototype.atualizaAdministrador = function (req, res) {
+    EmpresaController.prototype.atualizaEmpresa = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, _a, nomeCompleto, cpf, cargo, usuario, status_2, senha, senhaHash, _b, dadosAtualizados, _c, success, message, error_4;
+            var id, _a, cnpj, inscricaoEstadual, inscricaoMunicipal, nomeFantasia, razaoSocial, telefoneComercial, nomeResponsavelLegal, telefoneResponsavelLegal, emailResponsavelLegal, dataCadastramento, status_2, senha, endereco, senhaHash, _b, dadosAtualizados, _c, success, message, error_4;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
                         _d.trys.push([0, 5, , 6]);
                         id = req.params.id;
-                        _a = req.body, nomeCompleto = _a.nomeCompleto, cpf = _a.cpf, cargo = _a.cargo, usuario = _a.usuario, status_2 = _a.status, senha = _a.senha;
+                        _a = req.body, cnpj = _a.cnpj, inscricaoEstadual = _a.inscricaoEstadual, inscricaoMunicipal = _a.inscricaoMunicipal, nomeFantasia = _a.nomeFantasia, razaoSocial = _a.razaoSocial, telefoneComercial = _a.telefoneComercial, nomeResponsavelLegal = _a.nomeResponsavelLegal, telefoneResponsavelLegal = _a.telefoneResponsavelLegal, emailResponsavelLegal = _a.emailResponsavelLegal, dataCadastramento = _a.dataCadastramento, status_2 = _a.status, senha = _a.senha, endereco = _a.endereco;
                         if (!senha) return [3 /*break*/, 2];
                         return [4 /*yield*/, bcrypt_1.default.hash(senha, 10)];
                     case 1:
@@ -157,8 +166,8 @@ var AdministradorController = /** @class */ (function () {
                         _d.label = 3;
                     case 3:
                         senhaHash = _b;
-                        dadosAtualizados = __assign({ nomeCompleto: nomeCompleto, cpf: cpf, cargo: cargo, usuario: usuario, status: status_2 }, (senhaHash && { senha: senhaHash }));
-                        return [4 /*yield*/, this.repository.atualizaAdministrador(Number(id), dadosAtualizados)];
+                        dadosAtualizados = __assign(__assign({ cnpj: cnpj, inscricaoEstadual: inscricaoEstadual, inscricaoMunicipal: inscricaoMunicipal, nomeFantasia: nomeFantasia, razaoSocial: razaoSocial, telefoneComercial: telefoneComercial, nomeResponsavelLegal: nomeResponsavelLegal, telefoneResponsavelLegal: telefoneResponsavelLegal, emailResponsavelLegal: emailResponsavelLegal, dataCadastramento: new Date(dataCadastramento), status: status_2 }, (senhaHash && { senha: senhaHash })), { endereco: endereco });
+                        return [4 /*yield*/, this.repository.atualizaEmpresa(Number(id), dadosAtualizados)];
                     case 4:
                         _c = _d.sent(), success = _c.success, message = _c.message;
                         if (!success) {
@@ -169,7 +178,7 @@ var AdministradorController = /** @class */ (function () {
                         return [3 /*break*/, 6];
                     case 5:
                         error_4 = _d.sent();
-                        console.error("Erro ao atualizar administrador:", error_4);
+                        console.error("Erro ao atualizar empresa:", error_4);
                         res.status(500).json({ message: "Erro interno do servidor." });
                         return [3 /*break*/, 6];
                     case 6: return [2 /*return*/];
@@ -177,7 +186,7 @@ var AdministradorController = /** @class */ (function () {
             });
         });
     };
-    AdministradorController.prototype.deletaAdministrador = function (req, res) {
+    EmpresaController.prototype.deletaEmpresa = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var id, _a, success, message, error_5;
             return __generator(this, function (_b) {
@@ -185,7 +194,7 @@ var AdministradorController = /** @class */ (function () {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
                         id = req.params.id;
-                        return [4 /*yield*/, this.repository.deletaAdministrador(Number(id))];
+                        return [4 /*yield*/, this.repository.deletaEmpresa(Number(id))];
                     case 1:
                         _a = _b.sent(), success = _a.success, message = _a.message;
                         if (!success) {
@@ -196,7 +205,7 @@ var AdministradorController = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_5 = _b.sent();
-                        console.error("Erro ao deletar administrador:", error_5);
+                        console.error("Erro ao deletar empresa:", error_5);
                         res.status(500).json({ message: "Erro interno do servidor." });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -204,6 +213,6 @@ var AdministradorController = /** @class */ (function () {
             });
         });
     };
-    return AdministradorController;
+    return EmpresaController;
 }());
-exports.default = AdministradorController;
+exports.default = EmpresaController;

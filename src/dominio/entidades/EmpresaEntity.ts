@@ -38,7 +38,7 @@ export class Empresa {
   dataCadastramento: Date;
 
   @Column({ type: 'varchar', length: 20 })
-  status: string; // Exemplo: "Ativo", "Inativo"
+  status: string; 
 
   @Column({ type: 'varchar', length: 255 })
   senha: string;
