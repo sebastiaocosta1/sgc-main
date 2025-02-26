@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import { Empresa } from "../../dominio/entidades/EmpresaEntity";
 import InterfaceEmpresaRepository from "../../dominio/repositorios/interfaces/InterfaceEmpresaRepository";
+import { Usuario } from "../../dominio/entidades/UsuarioEntity";
+import InterfaceUserRepository from "../../dominio/repositorios/interfaces/InterfaceUserRepository";
 import bcrypt from "bcrypt";
 
 export default class EmpresaController {
-    constructor(private repository: InterfaceEmpresaRepository) {}
+    constructor(private repository: InterfaceEmpresaRepository, private repository2: InterfaceUserRepository) {}
 
     async criaEmpresa(req: Request, res: Response): Promise<void> {
         try {
@@ -62,6 +64,8 @@ export default class EmpresaController {
             );
 
             await this.repository.criaEmpresa(novaEmpresa);
+            const novoUsuario = new Usuario(cnpj, senhaHash, "empresa", "Ativo");
+            this.repository2.criaUsuario(novoUsuario);
 
             res.status(201).json(novaEmpresa);
         } catch (error) {

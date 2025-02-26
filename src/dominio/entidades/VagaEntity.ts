@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { Empresa } from './EmpresaEntity'; // Importe a entidade Empresa
-import { Candidaturas } from './CandidaturaEntity'; // Importe a entidade Candidaturas
+import { Empresa } from './EmpresaEntity'; 
+import { Candidaturas } from './CandidaturaEntity'; 
 
 @Entity()
 export class Vagas {
@@ -14,10 +14,10 @@ export class Vagas {
   salario: number;
 
   @Column({ type: 'varchar', length: 50 })
-  tipo: string; // Exemplo: "CLT", "PJ", "Estágio"
+  tipo: string; 
 
   @Column({ type: 'varchar', length: 100 })
-  horarioExpediente: string; // Exemplo: "8h às 17h"
+  horarioExpediente: string; 
 
   @Column({ type: 'text', name: 'principais_atividades' })
   principaisAtividades: string;
@@ -26,10 +26,10 @@ export class Vagas {
   dataPublicacao: Date;
 
   @Column({ type: 'varchar', length: 20, name: 'status_vaga' })
-  statusVaga: string; // Exemplo: "Aberta", "Fechada"
+  statusVaga: string; 
 
   @Column({ type: 'varchar', length: 20, name: 'status_cadastro' })
-  statusCadastro: string; // Exemplo: "Ativo", "Inativo"
+  statusCadastro: string; 
 
   @ManyToOne(() => Empresa, (empresa) => empresa.vagas)
   empresa: Empresa;
