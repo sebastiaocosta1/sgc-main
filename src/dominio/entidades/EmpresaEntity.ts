@@ -2,6 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany
 import { Endereco } from "./EnderecoEntity";
 import { Vagas } from "./VagaEntity";
 
+//o dilema das redes sociais
+
 @Entity()
 export class Empresa {
   @PrimaryGeneratedColumn({ name: 'idempresa' })
@@ -43,12 +45,11 @@ export class Empresa {
   @Column({ type: 'varchar', length: 255 })
   senha: string;
 
-  @OneToOne(() => Endereco)
-  @JoinColumn()
-  endereco: Endereco;
+  @OneToMany(() => Endereco, (endereco) => endereco.idEndereco)
+  vagas: Vagas[];
 
   @OneToMany(() => Vagas, (vagas) => vagas.empresa)
-  vagas: Vagas[];
+  enderecos: Endereco[];
 
   constructor(
     cnpj: string,
@@ -63,7 +64,7 @@ export class Empresa {
     dataCadastramento: Date,
     status: string,
     senha: string,
-    endereco: Endereco
+    endereco: Endereco[]
   ) {
     this.cnpj = cnpj;
     this.inscricaoEstadual = inscricaoEstadual;
@@ -77,6 +78,6 @@ export class Empresa {
     this.dataCadastramento = dataCadastramento;
     this.status = status;
     this.senha = senha;
-    this.endereco = endereco;
+    this.enderecos = endereco;
   }
 }

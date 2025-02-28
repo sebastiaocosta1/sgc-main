@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Empresa } from "./EmpresaEntity";
 
 @Entity("enderecos")
 export class Endereco {
@@ -22,6 +23,9 @@ export class Endereco {
 
   @Column({ type: 'varchar', length: 10 })
   status: string;
+
+    @OneToMany(() => Empresa, (empresa) => empresa.enderecos)
+    endereco: Endereco[];
 
   constructor(cep: string, cidade: string, estado: string, rua: string, numero: string, status: string) {
     this.cep = cep;

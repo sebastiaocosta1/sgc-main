@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { Vagas } from "../../dominio/entidades/VagaEntity";
 import InterfaceVagasRepository from "../../dominio/repositorios/interfaces/InterfaceVagaRepository";
+import { log } from "console";
 
 export default class VagasController {
-    constructor(private repository: InterfaceVagasRepository) {}
+    constructor(private repository: InterfaceVagasRepository) { }
 
     async criaVaga(req: Request, res: Response): Promise<void> {
         try {
@@ -19,18 +20,8 @@ export default class VagasController {
                 empresa,
             } = req.body as Vagas;
 
-            // Validação dos campos obrigatórios
-            if (
-                !cargo ||
-                !salario ||
-                !tipo ||
-                !horarioExpediente ||
-                !principaisAtividades ||
-                !dataPublicacao ||
-                !statusVaga ||
-                !statusCadastro ||
-                !empresa
-            ) {
+
+            if (!cargo || !salario || !tipo || !horarioExpediente || !principaisAtividades || !dataPublicacao || !statusVaga || !statusCadastro || !empresa) {
                 res.status(400).json({ message: "Todos os campos obrigatórios devem ser fornecidos." });
                 return;
             }

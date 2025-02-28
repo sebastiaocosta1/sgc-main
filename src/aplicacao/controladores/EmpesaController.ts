@@ -23,13 +23,17 @@ export default class EmpresaController {
                 dataCadastramento,
                 status,
                 senha,
-                endereco,
+                enderecos,
             } = req.body as Empresa;
+
+            //console.log(req.body)
 
             // Validação dos campos obrigatórios
             if (
                 !cnpj ||
                 !nomeFantasia ||
+                !inscricaoEstadual ||
+                !inscricaoMunicipal ||
                 !razaoSocial ||
                 !telefoneComercial ||
                 !nomeResponsavelLegal ||
@@ -38,7 +42,7 @@ export default class EmpresaController {
                 !dataCadastramento ||
                 !status ||
                 !senha ||
-                !endereco
+                !enderecos
             ) {
                 res.status(400).json({ message: "Todos os campos obrigatórios devem ser fornecidos." });
                 return;
@@ -60,11 +64,11 @@ export default class EmpresaController {
                 new Date(dataCadastramento),
                 status,
                 senhaHash,
-                endereco
+                enderecos
             );
 
             await this.repository.criaEmpresa(novaEmpresa);
-            const novoUsuario = new Usuario(cnpj, senhaHash, "empresa", "Ativo");
+            const novoUsuario = new Usuario(cnpj, senhaHash, "empresa", "Ativo");            
             this.repository2.criaUsuario(novoUsuario);
 
             res.status(201).json(novaEmpresa);
@@ -117,7 +121,7 @@ export default class EmpresaController {
                 dataCadastramento,
                 status,
                 senha,
-                endereco,
+                enderecos,
             } = req.body as Empresa;
 
             // Hash da nova senha, caso fornecida
@@ -136,7 +140,7 @@ export default class EmpresaController {
                 dataCadastramento: new Date(dataCadastramento),
                 status,
                 ...(senhaHash && { senha: senhaHash }),
-                endereco,
+                enderecos,
             };
 
             const { success, message } = await this.repository.atualizaEmpresa(
