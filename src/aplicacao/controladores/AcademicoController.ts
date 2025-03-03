@@ -7,16 +7,37 @@ export default class AcademicoController {
 
     async criaAcademico(req: Request, res: Response): Promise<void> {
         try {
-            const { nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, status, senha } = <Academico>req.body;
-            console.log(req.body)
-            if (!nome || !idade || !email || !telefone || !hardskills || !softskills || !matricula || ! status || !senha) {
+            const { nome,
+                    idade,
+                    email,
+                    telefone,
+                    hardskills,
+                    softskills,
+                    matricula,
+                    curriculo,
+                    status,
+                    senha,
+                    usuario
+                     } = <Academico>req.body;
+            //console.log(req.body)
+            if (!nome||
+                !idade ||
+                !email ||
+                !telefone||
+                !hardskills ||
+                !softskills ||
+                !matricula ||
+                !curriculo ||
+                !status ||
+                !senha ||
+                !usuario
+                ) {
                 res.status(400).json({ message: "Todos os campos obrigatórios devem ser preenchidos." });
                 return;
             }
 
-            const novoAcademico = new Academico(nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, status, senha);
+            const novoAcademico = new Academico(nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, status, senha, usuario);
             await this.repository.criaAcademico(novoAcademico);
-
         
             res.status(201).json(novoAcademico);
         } catch (error) {

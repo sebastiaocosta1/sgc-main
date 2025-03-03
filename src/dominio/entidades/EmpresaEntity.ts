@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from "typeorm";
 import { Endereco } from "./EnderecoEntity";
 import { Vagas } from "./VagaEntity";
+import { Usuario } from "./UsuarioEntity";
 
 //o dilema das redes sociais
 
@@ -51,6 +52,10 @@ export class Empresa {
   @OneToMany(() => Vagas, (vagas) => vagas.empresa)
   enderecos: Endereco[];
 
+    @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true })
+    @JoinColumn({ name: 'idusuario' })
+    usuario: Usuario;
+
   constructor(
     cnpj: string,
     inscricaoEstadual: string,
@@ -64,7 +69,8 @@ export class Empresa {
     dataCadastramento: Date,
     status: string,
     senha: string,
-    endereco: Endereco[]
+    endereco: Endereco[],
+    usuario: Usuario
   ) {
     this.cnpj = cnpj;
     this.inscricaoEstadual = inscricaoEstadual;
@@ -79,5 +85,6 @@ export class Empresa {
     this.status = status;
     this.senha = senha;
     this.enderecos = endereco;
+    this.usuario = usuario;
   }
 }

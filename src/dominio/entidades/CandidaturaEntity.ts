@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
 import { Vagas } from './VagaEntity';
 import { Contratacoes } from './ContratacoesEntity';
-import { Entrevista } from './EntrevistaEntity'; // Importe a entidade Entrevista
-import { Academico } from './AcademicoEntity'; // Importe a entidade Academicos
+import { Entrevista } from './EntrevistaEntity'; 
+import { Academico } from './AcademicoEntity'; 
 
 @Entity()
 export class Candidaturas {
@@ -13,7 +13,7 @@ export class Candidaturas {
   dataCandidatura: Date;
 
   @Column({ type: 'varchar', length: 20, name: 'status_candidatura' })
-  statusCandidatura: string; // Exemplo: "Pendente", "Aprovado", "Rejeitado"
+  statusCandidatura: string; 
 
   @ManyToOne(() => Vagas, (vagas) => vagas.candidaturas)
   vaga: Vagas;

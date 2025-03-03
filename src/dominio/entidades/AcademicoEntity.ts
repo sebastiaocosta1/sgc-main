@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { Candidaturas } from './CandidaturaEntity';
+import { Usuario } from './UsuarioEntity';
 
 @Entity()
 export class Academico {
@@ -39,6 +40,10 @@ export class Academico {
   @OneToOne(() => Candidaturas, (candidatura) => candidatura.academico)
   candidatura: Candidaturas;
 
+  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true })
+  @JoinColumn({ name: 'idusuario' })
+  usuario: Usuario;
+
   constructor(
     nome: string,
     idade: number,
@@ -50,7 +55,8 @@ export class Academico {
     curriculo: string,
     status: string,
     senha: string,    
-    candidatura?: Candidaturas,    
+    usuario: Usuario,  
+    
   ) {
     this.nome = nome;
     this.idade = idade;
@@ -61,7 +67,7 @@ export class Academico {
     this.matricula = matricula;
     this.curriculo = curriculo;
     this.status = status;
-    this.senha = senha;    
-    this.candidatura = candidatura || null;    
+    this.senha = senha;       
+    this.usuario = usuario 
   }
 }

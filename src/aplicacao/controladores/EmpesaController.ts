@@ -24,11 +24,11 @@ export default class EmpresaController {
                 status,
                 senha,
                 enderecos,
+                usuario
             } = req.body as Empresa;
 
-            //console.log(req.body)
-
-            // Validação dos campos obrigatórios
+            console.log(req.body)
+            
             if (
                 !cnpj ||
                 !nomeFantasia ||
@@ -42,13 +42,13 @@ export default class EmpresaController {
                 !dataCadastramento ||
                 !status ||
                 !senha ||
-                !enderecos
+                !enderecos ||
+                !usuario
             ) {
                 res.status(400).json({ message: "Todos os campos obrigatórios devem ser fornecidos." });
                 return;
             }
-
-            // Hash da senha
+            
             const senhaHash = await bcrypt.hash(senha, 10);
 
             const novaEmpresa = new Empresa(
@@ -64,13 +64,12 @@ export default class EmpresaController {
                 new Date(dataCadastramento),
                 status,
                 senhaHash,
-                enderecos
+                enderecos,
+                usuario
             );
 
-            await this.repository.criaEmpresa(novaEmpresa);
-            const novoUsuario = new Usuario(cnpj, senhaHash, "empresa", "Ativo");            
-            this.repository2.criaUsuario(novoUsuario);
-
+            await this.repository.criaEmpresa(novaEmpresa);       
+            
             res.status(201).json(novaEmpresa);
         } catch (error) {
             console.error("Erro ao criar empresa:", error);
@@ -122,9 +121,9 @@ export default class EmpresaController {
                 status,
                 senha,
                 enderecos,
+                usuario
             } = req.body as Empresa;
-
-            // Hash da nova senha, caso fornecida
+            
             const senhaHash = senha ? await bcrypt.hash(senha, 10) : undefined;
 
             const dadosAtualizados = {
@@ -141,6 +140,7 @@ export default class EmpresaController {
                 status,
                 ...(senhaHash && { senha: senhaHash }),
                 enderecos,
+                usuario                
             };
 
             const { success, message } = await this.repository.atualizaEmpresa(
