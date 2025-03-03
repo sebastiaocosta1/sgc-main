@@ -2,21 +2,27 @@ import { Request, Response } from "express";
 import { Administrador } from "../../dominio/entidades/AdministradorEntity";
 import InterfaceAdministradorRepository from "../../dominio/repositorios/interfaces/InterfaceAdministradorRepository";
 import bcrypt from "bcrypt";
+import { Usuario } from "../../dominio/entidades/UsuarioEntity";
+import  InterfaceUsuarioRepository  from "../../dominio/repositorios/UsuarioRepository";
 
 export default class AdministradorController {
-    constructor(private repository: InterfaceAdministradorRepository) {}
+    constructor(private repository: InterfaceAdministradorRepository, private repository2: InterfaceUsuarioRepository) {}
    
     async criaAdministrador(req: Request, res: Response): Promise<void> {
         try {
-            const { nomeCompleto, cpf, cargo, usuario, status, senha} = <Administrador>req.body;
+            const { nomeCompleto, cpf, cargo,senha , status, usuario} = <Administrador>req.body;
            
-            if (!nomeCompleto || !cpf || !cargo || !usuario || !status || !senha ) {
+            if (!nomeCompleto || !cpf || !cargo || !status || !senha || !usuario ) {
                 res.status(400).json({ message: "Todos os campos são obrigatórios." });
                 return;
             }
-            
-            const senhaHash = await bcrypt.hash(senha, 10);            
-            const novoAdministrador = new Administrador(nomeCompleto, cpf, cargo, usuario, status, senhaHash);
+
+
+            // constructor(usuario: string, senha: string, tipo: string, status: string)
+            const senhaHash = await bcrypt.hash(senha, 10);    
+            //const novoUsuario = new Usuario(usuario.usuario, senha, "Administrador", "Ativo");
+
+            const novoAdministrador = new Administrador(nomeCompleto, cpf, cargo, status, senhaHash, usuario);
             
             await this.repository.criaAdministrador(novoAdministrador);
 

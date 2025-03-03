@@ -2,7 +2,7 @@ import express from "express";
 import AdministradorController from "../../aplicacao/controladores/AdministradorController";
 import AdministradorRepository from "../../dominio/repositorios/AdministradorRepository";
 import { AppDataSource } from "../../infraestrutura/config/dataSource";
-
+import UsuarioRepository from "../../dominio/repositorios/UsuarioRepository";
 
 const router = express.Router();
 
@@ -10,8 +10,11 @@ const administradorRepository = new AdministradorRepository(
     AppDataSource.getRepository("Administrador")
 );
 
-const administradorController = new AdministradorController(administradorRepository);
+const userRepository = new UsuarioRepository(
+    AppDataSource.getRepository("Usuario")
+);
 
+const administradorController = new AdministradorController(administradorRepository, userRepository);
 router.post("/", administradorController.criaAdministrador.bind(administradorController));
 router.get("/", administradorController.listaAdministradores.bind(administradorController));
 router.get("/:id", administradorController.listaAdministrador.bind(administradorController));

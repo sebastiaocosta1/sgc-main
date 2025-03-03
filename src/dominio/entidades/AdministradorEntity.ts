@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Usuario } from './UsuarioEntity';
 
 @Entity()
 export class Administrador {
@@ -14,30 +15,29 @@ export class Administrador {
   @Column({ type: 'varchar', length: 100 })
   cargo: string;
 
-  @Column({ type: 'varchar', length: 50, unique: true })
-  usuario: string;
-
   @Column({ type: 'varchar', length: 10 })
   status: string;
 
   @Column({ type: 'varchar', length: 255 })
   senha: string;
 
+  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true })
+  @JoinColumn({ name: 'idusuario' })
+  usuario: Usuario;
+
   constructor(
     nomeCompleto: string,
     cpf: string,
     cargo: string,
-    usuario: string,
     status: string,
-    senha: string
-    
-  
+    senha: string,
+    usuario: Usuario
   ) {
     this.nomeCompleto = nomeCompleto;
     this.cpf = cpf;
     this.cargo = cargo;
-    this.usuario = usuario;
     this.status = status;
-    this.senha = senha;    
+    this.senha = senha;
+    this.usuario = usuario;
   }
 }
