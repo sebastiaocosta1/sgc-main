@@ -7,14 +7,14 @@ export default class CandidaturaController {
 
     async criaCandidatura(req: Request, res: Response): Promise<void> {
         try {
-            const { dataCandidatura, statusCandidatura, vaga, contratacao, entrevista, academico } = <Candidaturas>req.body;
+            const { dataCandidatura, statusCandidatura, vaga, academico } = <Candidaturas>req.body;
             
-            if (!dataCandidatura || !statusCandidatura || !vaga || !contratacao || !entrevista || !academico) {
+            if (!dataCandidatura || !statusCandidatura || !vaga || !academico) {
                 res.status(400).json({ message: "Todos os campos obrigatórios devem ser preenchidos." });
                 return;
             }
 
-            const novaCandidatura = new Candidaturas(dataCandidatura, statusCandidatura, vaga, contratacao, entrevista, academico);
+            const novaCandidatura = new Candidaturas(dataCandidatura, statusCandidatura, vaga, academico);
             await this.repository.criaCandidatura(novaCandidatura);
 
             res.status(201).json(novaCandidatura);

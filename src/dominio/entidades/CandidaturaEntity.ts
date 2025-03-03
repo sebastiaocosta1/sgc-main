@@ -29,12 +29,10 @@ export class Candidaturas {
   @JoinColumn()
   academico: Academico;
 
-  constructor(dataCandidatura: Date, statusCandidatura: string, vaga: Vagas, contratacao: Contratacoes, entrevista: Entrevista, academico: Academico) {
+  constructor(dataCandidatura: Date, statusCandidatura: string, vaga: Vagas, academico: Academico) {
     this.dataCandidatura = dataCandidatura;
     this.statusCandidatura = statusCandidatura;
     this.vaga = vaga;
-    this.contratacao = contratacao;
-    this.entrevista = entrevista;
     this.academico = academico;
   }
 }

@@ -27,7 +27,7 @@ export default class EmpresaController {
                 usuario
             } = req.body as Empresa;
 
-            console.log(req.body)
+            // console.log(req.body)
             
             if (
                 !cnpj ||
