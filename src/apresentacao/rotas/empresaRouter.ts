@@ -13,7 +13,7 @@ const userRepository = new UsuarioRepository(
     AppDataSource.getRepository("Usuario")
 );
 
-const empresaController = new EmpresaController(empresaRepository, userRepository);
+const empresaController = new EmpresaController(empresaRepository);
 
 router.post("/", empresaController.criaEmpresa.bind(empresaController));
 router.get("/", empresaController.listaEmpresas.bind(empresaController));

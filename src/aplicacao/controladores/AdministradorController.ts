@@ -4,9 +4,10 @@ import InterfaceAdministradorRepository from "../../dominio/repositorios/interfa
 import bcrypt from "bcrypt";
 import { Usuario } from "../../dominio/entidades/UsuarioEntity";
 import  InterfaceUsuarioRepository  from "../../dominio/repositorios/UsuarioRepository";
+import { AppDataSource } from "../../infraestrutura/config/dataSource";
 
 export default class AdministradorController {
-    constructor(private repository: InterfaceAdministradorRepository, private repository2: InterfaceUsuarioRepository) {}
+    constructor(private repository: InterfaceAdministradorRepository) {}
    
     async criaAdministrador(req: Request, res: Response): Promise<void> {
         try {
@@ -15,10 +16,20 @@ export default class AdministradorController {
             if (!nomeCompleto || !cpf || !cargo || !status || !senha || !usuario ) {
                 res.status(400).json({ message: "Todos os campos são obrigatórios." });
                 return;
+            }                
+            
+            const usuarioRepository = AppDataSource.getRepository(Usuario);
+            const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });
+
+            if (usuarioExistente) {
+                res.status(400).json({ message: "Nome de usuário já existe! Tente novamente." });
+                return;
             }
-            
-            const senhaHash = await bcrypt.hash(senha, 10);           
-            
+
+            const senhaHash = await bcrypt.hash(senha, 10);  
+            const novoUsuario = new Usuario(usuario, senhaHash, "Administrador", status);
+            await usuarioRepository.save(novoUsuario);
+
             const novoAdministrador = new Administrador(nomeCompleto, cpf, cargo, status, senhaHash, usuario);
             
             await this.repository.criaAdministrador(novoAdministrador);

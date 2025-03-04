@@ -18,8 +18,8 @@ export class Usuario {
   @Column({ type: 'varchar', length: 10 })
   status: string;
 
-  @OneToOne(() => Administrador, (administrador) => administrador.usuario)
-  administrador?: Administrador;
+  // @OneToOne(() => Administrador, (administrador) => administrador.usuario)
+  // administrador?: Administrador;
 
   constructor(usuario: string, senha: string, tipo: string, status: string) {
     this.usuario = usuario;

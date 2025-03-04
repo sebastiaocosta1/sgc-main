@@ -4,9 +4,10 @@ import InterfaceEmpresaRepository from "../../dominio/repositorios/interfaces/In
 import { Usuario } from "../../dominio/entidades/UsuarioEntity";
 import InterfaceUserRepository from "../../dominio/repositorios/interfaces/InterfaceUserRepository";
 import bcrypt from "bcrypt";
+import { AppDataSource } from "../../infraestrutura/config/dataSource";
 
 export default class EmpresaController {
-    constructor(private repository: InterfaceEmpresaRepository, private repository2: InterfaceUserRepository) {}
+    constructor(private repository: InterfaceEmpresaRepository) {}
 
     async criaEmpresa(req: Request, res: Response): Promise<void> {
         try {
@@ -48,12 +49,19 @@ export default class EmpresaController {
                 res.status(400).json({ message: "Todos os campos obrigatórios devem ser fornecidos." });
                 return;
             }
-            
+
+            const usuarioRepository = AppDataSource.getRepository(Usuario);
+            const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });
+
+            if (usuarioExistente) {
+                res.status(400).json({ message: "Nome de usuário já está em uso." });
+                return;
+            }
+
             const senhaHash = await bcrypt.hash(senha, 10);
 
-            // const novoUsuario = new Usuario(cnpj, senhaHash, "Empresa", "Ativo");
-            // await this.repository2.criaUsuario(novoUsuario);
-            // const teste = await this.repository2.listaUsuario()
+            const novoUsuario = new Usuario(usuario, senhaHash, "Empresa", status);
+            await usuarioRepository.save(novoUsuario);
 
             const novaEmpresa = new Empresa(
                 cnpj,
@@ -67,9 +75,10 @@ export default class EmpresaController {
                 emailResponsavelLegal,
                 new Date(dataCadastramento),
                 status,
+                usuario,
                 senhaHash,
-                enderecos,
-                usuario
+                enderecos
+                
             );                       
 
             await this.repository.criaEmpresa(novaEmpresa);       

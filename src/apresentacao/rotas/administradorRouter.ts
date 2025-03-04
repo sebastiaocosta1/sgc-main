@@ -14,7 +14,7 @@ const userRepository = new UsuarioRepository(
     AppDataSource.getRepository("Usuario")
 );
 
-const administradorController = new AdministradorController(administradorRepository, userRepository);
+const administradorController = new AdministradorController(administradorRepository);
 router.post("/", administradorController.criaAdministrador.bind(administradorController));
 router.get("/", administradorController.listaAdministradores.bind(administradorController));
 router.get("/:id", administradorController.listaAdministrador.bind(administradorController));

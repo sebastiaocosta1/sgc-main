@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { Academico } from "../../dominio/entidades/AcademicoEntity";
 import InterfaceAcademicoRepository from "../../dominio/repositorios/interfaces/InterfaceAcademicoRepository";
+import { AppDataSource } from "../../infraestrutura/config/dataSource";
+import { Usuario } from "../../dominio/entidades/UsuarioEntity";
+import bcrypt from "bcrypt";
 
 export default class AcademicoController {
     constructor(private repository: InterfaceAcademicoRepository) {}
@@ -15,9 +18,10 @@ export default class AcademicoController {
                     softskills,
                     matricula,
                     curriculo,
-                    status,
                     senha,
-                    usuario
+                    usuario,
+                    status
+
                      } = <Academico>req.body;
             //console.log(req.body)
             if (!nome||
@@ -36,7 +40,20 @@ export default class AcademicoController {
                 return;
             }
 
-            const novoAcademico = new Academico(nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, status, senha, usuario);
+            const usuarioRepository = AppDataSource.getRepository(Usuario);
+            const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });
+
+            if (usuarioExistente) {
+                res.status(400).json({ message: "Nome de usuário já está em uso." });
+                return;
+            }
+
+            const senhaHash = await bcrypt.hash(senha, 10);
+
+            const novoUsuario = new Usuario(usuario, senhaHash, "Academico", status);
+            await usuarioRepository.save(novoUsuario);
+
+            const novoAcademico = new Academico(nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, usuario, senhaHash,status);
             await this.repository.criaAcademico(novoAcademico);
         
             res.status(201).json(novoAcademico);

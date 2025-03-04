@@ -35,14 +35,17 @@ export class Academico {
   status: string;
 
   @Column({ type: 'varchar', length: 255 })
+  usuario: string;
+
+  @Column({ type: 'varchar', length: 255 })
   senha: string;
 
   @OneToOne(() => Candidaturas, (candidatura) => candidatura.academico)
   candidatura: Candidaturas;
 
-  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true })
-  @JoinColumn({ name: 'idusuario' })
-  usuario: Usuario;
+  // @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true })
+  // @JoinColumn({ name: 'idusuario' })
+  // usuario: Usuario;
 
   constructor(
     nome: string,
@@ -53,10 +56,9 @@ export class Academico {
     softskills: string,
     matricula: string,
     curriculo: string,
-    status: string,
-    senha: string,    
-    usuario: Usuario,  
-    
+    usuario: string,
+    senha: string,
+    status: string,     
   ) {
     this.nome = nome;
     this.idade = idade;
@@ -66,8 +68,8 @@ export class Academico {
     this.softskills = softskills;
     this.matricula = matricula;
     this.curriculo = curriculo;
-    this.status = status;
-    this.senha = senha;       
-    this.usuario = usuario 
+    this.usuario = usuario;
+    this.senha = senha;
+    this.status = status;   
   }
 }

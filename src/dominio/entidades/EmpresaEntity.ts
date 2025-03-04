@@ -44,6 +44,9 @@ export class Empresa {
   status: string; 
 
   @Column({ type: 'varchar', length: 255 })
+  usuario: string;
+
+  @Column({ type: 'varchar', length: 255 })
   senha: string;
 
   @OneToMany(() => Endereco, (endereco) => endereco.idEndereco)
@@ -52,9 +55,9 @@ export class Empresa {
   @OneToMany(() => Vagas, (vagas) => vagas.empresa)
   enderecos: Endereco[];
 
-    @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true })
-    @JoinColumn({ name: 'idusuario' })
-    usuario: Usuario;
+    // @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true })
+    // @JoinColumn({ name: 'idusuario' })
+    // usuario: Usuario;
 
   constructor(
     cnpj: string,
@@ -68,9 +71,9 @@ export class Empresa {
     emailResponsavelLegal: string,
     dataCadastramento: Date,
     status: string,
+    usuario: string,
     senha: string,
-    endereco: Endereco[],
-    usuario: Usuario
+    endereco: Endereco[]  
   ) {
     this.cnpj = cnpj;
     this.inscricaoEstadual = inscricaoEstadual;
@@ -83,8 +86,9 @@ export class Empresa {
     this.emailResponsavelLegal = emailResponsavelLegal;
     this.dataCadastramento = dataCadastramento;
     this.status = status;
+    this.usuario = usuario;
     this.senha = senha;
     this.enderecos = endereco;
-    this.usuario = usuario;
+    
   }
 }

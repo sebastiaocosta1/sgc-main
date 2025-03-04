@@ -19,11 +19,14 @@ export class Administrador {
   status: string;
 
   @Column({ type: 'varchar', length: 255 })
+  usuario: string;
+
+  @Column({ type: 'varchar', length: 255 })
   senha: string;
 
-  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true })
-  @JoinColumn({ name: 'idusuario' })
-  usuario: Usuario;
+  // @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true })
+  // @JoinColumn({ name: 'idusuario' })
+  // usuario: Usuario;
 
   constructor(
     nomeCompleto: string,
@@ -31,7 +34,7 @@ export class Administrador {
     cargo: string,
     status: string,
     senha: string,
-    usuario: Usuario
+    usuario: string
   ) {
     this.nomeCompleto = nomeCompleto;
     this.cpf = cpf;
