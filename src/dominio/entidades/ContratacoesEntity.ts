@@ -10,7 +10,7 @@ export class Contratacoes {
   dataContratacao: Date;
 
   @OneToOne(() => Candidaturas)
-  @JoinColumn()
+  @JoinColumn({ name: 'idcandidatura' })
   candidatura: Candidaturas;
 
   constructor(dataContratacao: Date, candidatura: Candidaturas) {

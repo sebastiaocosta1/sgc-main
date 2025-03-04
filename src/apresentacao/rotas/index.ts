@@ -7,6 +7,8 @@ import academicoRoter from "../rotas/academicoRouter";
 import empresaRouter from "../rotas/empresaRouter";
 import vagaRouter from "../rotas/vagaRouter";
 import candidaturaRouter from "../rotas/candidaturaRouter";
+import entrevistaRouter from "../rotas/entrevistaRouter";
+import contratacoesRouter from "../rotas/contratacoesRouter";
 
 const router = (app: express.Router) => {
     
@@ -17,6 +19,8 @@ const router = (app: express.Router) => {
     app.use("/empresas", empresaRouter);
     app.use("/vagas", vagaRouter);
     app.use("/candidaturas", candidaturaRouter);
+    app.use("/entrevistas", entrevistaRouter);
+    app.use("/contratacoes", contratacoesRouter);
 };
 
 export default router;

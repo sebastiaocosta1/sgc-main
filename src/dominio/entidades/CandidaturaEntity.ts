@@ -21,8 +21,7 @@ export class Candidaturas {
   @OneToOne(() => Contratacoes, (contratacao) => contratacao.candidatura)
   contratacao: Contratacoes;
 
-  @OneToOne(() => Entrevista)
-  @JoinColumn()
+  @OneToOne(() => Entrevista, (entrevista) => entrevista.candidatura)
   entrevista: Entrevista;
 
   @OneToOne(() => Academico)

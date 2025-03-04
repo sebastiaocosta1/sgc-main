@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
-import { Candidaturas } from './CandidaturaEntity'; // Importe a entidade Candidaturas
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Candidaturas } from './CandidaturaEntity'; 
 
 @Entity()
 export class Entrevista {
@@ -13,15 +13,16 @@ export class Entrevista {
   hora: string;
 
   @Column({ type: 'varchar', length: 50 })
-  modalidade: string; // Exemplo: "Presencial" ou "Online"
+  modalidade: string; 
 
   @Column({ type: 'text' })
-  texto: string; // Texto com os detalhes ou instruções da entrevista
+  texto: string; 
 
   @Column({ type: 'text', name: 'resposta_convidado', nullable: true })
-  respostaConvidado: string; // Resposta do convidado, se houver
+  respostaConvidado: string; 
 
-  @OneToOne(() => Candidaturas, (candidatura) => candidatura.entrevista)
+  @OneToOne(() => Candidaturas, (candidatura) => candidatura.entrevista, { eager: true })
+  @JoinColumn({ name: 'idcandidatura' })  
   candidatura: Candidaturas;
 
   constructor(
@@ -29,8 +30,8 @@ export class Entrevista {
     hora: string,
     modalidade: string,
     texto: string,
-    respostaConvidado?: string,
-    candidatura?: Candidaturas
+    respostaConvidado: string,
+    candidatura: Candidaturas
   ) {
     this.data = data;
     this.hora = hora;
