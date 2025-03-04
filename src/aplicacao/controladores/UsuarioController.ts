@@ -1,7 +1,11 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { Usuario } from "../../dominio/entidades/UsuarioEntity";
 import InterfaceUsuarioRepository from "../../dominio/repositorios/interfaces/InterfaceUserRepository";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { AppDataSource } from "../../infraestrutura/config/dataSource";
+
+type JwtPayload = { id: number};
 
 export default class UsuarioController {
     constructor(private repository: InterfaceUsuarioRepository) {}
@@ -100,5 +104,43 @@ export default class UsuarioController {
             console.error("Erro ao deletar usuário:", error);
             res.status(500).json({ message: "Erro interno do servidor." });
         }
+    }
+
+    async login(req: Request, res: Response){
+        const{usuario, senha} = req.body;
+
+        const usuarioRepository = AppDataSource.getRepository(Usuario);
+        const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });
+
+        if (!usuarioExistente) {
+            res.status(400).json({ message: "Usuário ou senha inválidos." });
+            return;
+        }
+
+        const verificaSenha = await bcrypt.compare(senha, usuarioExistente.senha);
+
+        if(!verificaSenha){
+            res.status(400).json({ message: "Usuário ou senha inválidos." });
+            return;
+        }
+
+        const token = jwt.sign({id: usuarioExistente.idUsuario}, process.env.JWT_PASS ?? '', {expiresIn: '8h'});
+
+        // console.log(token)
+
+        return res.json({messagem: "Usuário autenticado com sucesso!", token: token});
+    }
+
+    async validaLogin(req: Request, res: Response, next: NextFunction){
+        const { authorization } = req.headers;
+
+        if(!authorization){
+            return res.status(401).json({mensagem: "Acesso não autorizado."})
+        }
+
+        const token = authorization.split(' ')[1]
+        const { id } = jwt.verify(token, process.env.JWT_PASS ?? '') as JwtPayload;        
+        return res.status(200).json({mensagem: "Usuário logado!"})
+        
     }
 }
