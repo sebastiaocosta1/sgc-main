@@ -8,7 +8,7 @@ import empresaRouter from "../rotas/empresaRouter";
 import vagaRouter from "../rotas/vagaRouter";
 import candidaturaRouter from "../rotas/candidaturaRouter";
 import entrevistaRouter from "../rotas/entrevistaRouter";
-import contratacoesRouter from "../rotas/contratacoesRouter";
+import contratacoesRouter from "./contracoesRouter";
 
 const router = (app: express.Router) => {
     

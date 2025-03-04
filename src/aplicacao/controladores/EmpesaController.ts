@@ -51,6 +51,10 @@ export default class EmpresaController {
             
             const senhaHash = await bcrypt.hash(senha, 10);
 
+            // const novoUsuario = new Usuario(cnpj, senhaHash, "Empresa", "Ativo");
+            // await this.repository2.criaUsuario(novoUsuario);
+            // const teste = await this.repository2.listaUsuario()
+
             const novaEmpresa = new Empresa(
                 cnpj,
                 inscricaoEstadual,
@@ -66,7 +70,7 @@ export default class EmpresaController {
                 senhaHash,
                 enderecos,
                 usuario
-            );
+            );                       
 
             await this.repository.criaEmpresa(novaEmpresa);       
             

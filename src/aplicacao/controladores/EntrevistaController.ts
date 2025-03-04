@@ -13,7 +13,7 @@ export default class EntrevistaController {
                 res.status(400).json({ message: "Todos os campos obrigatórios devem ser preenchidos." });
                 return;
             }
-            console.log(req.body)
+            //console.log(req.body)
             
             const novaEntrevista = new Entrevista(data, hora, modalidade, texto, respostaConvidado, candidatura);
 

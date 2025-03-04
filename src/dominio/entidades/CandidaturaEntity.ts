@@ -23,8 +23,8 @@ export class Candidaturas {
 
   @OneToOne(() => Entrevista, (entrevista) => entrevista.candidatura)
   entrevista: Entrevista;
-
-  @OneToOne(() => Academico)
+  
+  @OneToOne(() => Academico, (academico) => academico.usuario, { cascade: true })
   @JoinColumn()
   academico: Academico;
 

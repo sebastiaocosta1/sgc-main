@@ -16,12 +16,9 @@ export default class AdministradorController {
                 res.status(400).json({ message: "Todos os campos são obrigatórios." });
                 return;
             }
-
-
-            // constructor(usuario: string, senha: string, tipo: string, status: string)
-            const senhaHash = await bcrypt.hash(senha, 10);    
-            //const novoUsuario = new Usuario(usuario.usuario, senha, "Administrador", "Ativo");
-
+            
+            const senhaHash = await bcrypt.hash(senha, 10);           
+            
             const novoAdministrador = new Administrador(nomeCompleto, cpf, cargo, status, senhaHash, usuario);
             
             await this.repository.criaAdministrador(novoAdministrador);
@@ -62,14 +59,13 @@ export default class AdministradorController {
             res.status(500).json({ message: "Erro interno do servidor." });
         }
     }
-
-    // Atualizar dados de um administrador
+    
     async atualizaAdministrador(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const { nomeCompleto, cpf, cargo, usuario, status, senha } = req.body as Administrador;
 
-            // Hash da nova senha, caso fornecida
+            
             const senhaHash = senha ? await bcrypt.hash(senha, 10) : undefined;
 
             const dadosAtualizados = {
