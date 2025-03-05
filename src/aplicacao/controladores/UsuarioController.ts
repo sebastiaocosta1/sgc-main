@@ -120,27 +120,15 @@ export default class UsuarioController {
         const verificaSenha = await bcrypt.compare(senha, usuarioExistente.senha);
 
         if(!verificaSenha){
-            res.status(400).json({ message: "Usuário ou senha inválidos." });
-            return;
+            res.status(400).json({ message: "Usuário ou senha inválidos." });            
         }
 
         const token = jwt.sign({id: usuarioExistente.idUsuario}, process.env.JWT_PASS ?? '', {expiresIn: '8h'});
-
         // console.log(token)
-
         return res.json({messagem: "Usuário autenticado com sucesso!", token: token});
     }
 
-    async validaLogin(req: Request, res: Response, next: NextFunction){
-        const { authorization } = req.headers;
-
-        if(!authorization){
-            return res.status(401).json({mensagem: "Acesso não autorizado."})
-        }
-
-        const token = authorization.split(' ')[1]
-        const { id } = jwt.verify(token, process.env.JWT_PASS ?? '') as JwtPayload;        
-        return res.status(200).json({mensagem: "Usuário logado!"})
-        
+    async validaLogin(req: Request, res: Response){            
+        return res.status(200).json(req.usuarioExistente)        
     }
 }
