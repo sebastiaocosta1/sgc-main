@@ -15,7 +15,6 @@ const usuarioController = new UsuarioController(usuarioRepository);
 
 router.post("/login", usuarioController.login.bind(usuarioController));
 router.post("/", usuarioController.criaUsuario.bind(usuarioController));
-router.get("/verificaLogin", authMiddleware, usuarioController.validaLogin.bind(usuarioController));
 router.get("/", authMiddleware, usuarioController.listaUsuarios.bind(usuarioController));
 router.get("/:id", authMiddleware, usuarioController.listaUsuario.bind(usuarioController));
 router.put("/:id", authMiddleware, usuarioController.atualizaUsuario.bind(usuarioController));

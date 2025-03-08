@@ -5,6 +5,7 @@ import { Usuario } from "../../dominio/entidades/UsuarioEntity";
 import InterfaceUserRepository from "../../dominio/repositorios/interfaces/InterfaceUserRepository";
 import bcrypt from "bcrypt";
 import { AppDataSource } from "../../infraestrutura/config/dataSource";
+import { Endereco } from "../../dominio/entidades/EnderecoEntity";
 
 export default class EmpresaController {
     constructor(private repository: InterfaceEmpresaRepository) {}
@@ -22,13 +23,11 @@ export default class EmpresaController {
                 telefoneResponsavelLegal,
                 emailResponsavelLegal,
                 dataCadastramento,
-                status,
-                senha,
-                enderecos,
+                endereco,
                 usuario
             } = req.body as Empresa;
 
-            // console.log(req.body)
+            
             
             if (
                 !cnpj ||
@@ -41,27 +40,28 @@ export default class EmpresaController {
                 !telefoneResponsavelLegal ||
                 !emailResponsavelLegal ||
                 !dataCadastramento ||
-                !status ||
-                !senha ||
-                !enderecos ||
+                !endereco ||
                 !usuario
             ) {
+
+
+                
                 res.status(400).json({ message: "Todos os campos obrigatórios devem ser fornecidos." });
                 return;
             }
 
             const usuarioRepository = AppDataSource.getRepository(Usuario);
-            const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });
+            const usuarioExistente = await usuarioRepository.findOne({ where: { usuario: usuario.usuario }});
 
             if (usuarioExistente) {
                 res.status(400).json({ message: "Nome de usuário já está em uso." });
                 return;
             }
+            
+            const senhaHash = await bcrypt.hash(usuario.senha, 10);
 
-            const senhaHash = await bcrypt.hash(senha, 10);
-
-            const novoUsuario = new Usuario(usuario, senhaHash, "Empresa", status);
-            await usuarioRepository.save(novoUsuario);
+            const novoEndereco = new Endereco(endereco.cep, endereco.cidade, endereco.estado, endereco.rua, endereco.numero)
+            const novoUsuario = new Usuario(usuario.usuario, senhaHash, "Empresa", usuario.status);            
 
             const novaEmpresa = new Empresa(
                 cnpj,
@@ -73,14 +73,11 @@ export default class EmpresaController {
                 nomeResponsavelLegal,
                 telefoneResponsavelLegal,
                 emailResponsavelLegal,
-                new Date(dataCadastramento),
-                status,
-                usuario,
-                senhaHash,
-                enderecos
-                
+                new Date(dataCadastramento),                 
+                novoEndereco,
+                novoUsuario       
             );                       
-
+            
             await this.repository.criaEmpresa(novaEmpresa);       
             
             res.status(201).json(novaEmpresa);
@@ -131,13 +128,11 @@ export default class EmpresaController {
                 telefoneResponsavelLegal,
                 emailResponsavelLegal,
                 dataCadastramento,
-                status,
-                senha,
                 enderecos,
                 usuario
             } = req.body as Empresa;
             
-            const senhaHash = senha ? await bcrypt.hash(senha, 10) : undefined;
+            const senhaHash = usuario.senha ? await bcrypt.hash(usuario.senha, 10) : undefined;
 
             const dadosAtualizados = {
                 cnpj,
@@ -149,9 +144,7 @@ export default class EmpresaController {
                 nomeResponsavelLegal,
                 telefoneResponsavelLegal,
                 emailResponsavelLegal,
-                dataCadastramento: new Date(dataCadastramento),
-                status,
-                ...(senhaHash && { senha: senhaHash }),
+                dataCadastramento: new Date(dataCadastramento), 
                 enderecos,
                 usuario                
             };

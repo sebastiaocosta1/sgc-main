@@ -16,6 +16,7 @@ const userRepository = new UsuarioRepository(
 );
 
 const administradorController = new AdministradorController(administradorRepository);
+
 router.post("/", administradorController.criaAdministrador.bind(administradorController));
 router.get("/",  authMiddleware, administradorController.listaAdministradores.bind(administradorController));
 router.get("/:id",  authMiddleware, administradorController.listaAdministrador.bind(administradorController));

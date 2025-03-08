@@ -11,26 +11,25 @@ export default class AdministradorController {
    
     async criaAdministrador(req: Request, res: Response): Promise<void> {
         try {
-            const { nomeCompleto, cpf, cargo,senha , status, usuario} = <Administrador>req.body;
+            const { nomeCompleto, cpf, cargo, usuario} = <Administrador>req.body;
            
-            if (!nomeCompleto || !cpf || !cargo || !status || !senha || !usuario ) {
+            if (!nomeCompleto || !cpf || !cargo || !usuario.status || ! usuario.senha || !usuario.usuario ) {
                 res.status(400).json({ message: "Todos os campos são obrigatórios." });
                 return;
             }                
             
             const usuarioRepository = AppDataSource.getRepository(Usuario);
-            const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });
+            const usuarioExistente = await usuarioRepository.findOne({ where: { usuario: usuario.usuario } });
 
             if (usuarioExistente) {
                 res.status(400).json({ message: "Nome de usuário já existe! Tente novamente." });
                 return;
             }
 
-            const senhaHash = await bcrypt.hash(senha, 10);  
-            const novoUsuario = new Usuario(usuario, senhaHash, "Administrador", status);
-            await usuarioRepository.save(novoUsuario);
+            const senhaHash = await bcrypt.hash(usuario.senha, 10);  
 
-            const novoAdministrador = new Administrador(nomeCompleto, cpf, cargo, status, senhaHash, usuario);
+            const novoUsuario = new Usuario(usuario.usuario, senhaHash, "Administrador", usuario.status);            
+            const novoAdministrador = new Administrador(nomeCompleto, cpf, cargo, novoUsuario);
             
             await this.repository.criaAdministrador(novoAdministrador);
 
@@ -52,7 +51,6 @@ export default class AdministradorController {
             res.status(500).json({ message: "Erro interno do servidor." });
         }
     }
-
     
     async listaAdministrador(req: Request, res: Response): Promise<void> {
         try {
@@ -74,19 +72,16 @@ export default class AdministradorController {
     async atualizaAdministrador(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            const { nomeCompleto, cpf, cargo, usuario, status, senha } = req.body as Administrador;
+            const { nomeCompleto, cpf, cargo, usuario} = req.body as Administrador;
 
             
-            const senhaHash = senha ? await bcrypt.hash(senha, 10) : undefined;
+            const senhaHash = usuario.senha ? await bcrypt.hash(usuario.senha, 10) : undefined;
 
             const dadosAtualizados = {
                 nomeCompleto,
                 cpf,
                 cargo,
-                usuario,
-                status,
-                ...(senhaHash && { senha: senhaHash }),
-                
+                usuario 
             };
 
             const { success, message } = await this.repository.atualizaAdministrador(

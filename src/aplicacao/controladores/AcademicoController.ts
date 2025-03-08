@@ -17,12 +17,9 @@ export default class AcademicoController {
                     hardskills,
                     softskills,
                     matricula,
-                    curriculo,
-                    senha,
+                    curriculo,                    
                     usuario,
-                    status
-
-                     } = <Academico>req.body;
+                } = <Academico>req.body;
             //console.log(req.body)
             if (!nome||
                 !idade ||
@@ -32,28 +29,25 @@ export default class AcademicoController {
                 !softskills ||
                 !matricula ||
                 !curriculo ||
-                !status ||
-                !senha ||
                 !usuario
-                ) {
+            ) {
                 res.status(400).json({ message: "Todos os campos obrigatórios devem ser preenchidos." });
                 return;
             }
 
             const usuarioRepository = AppDataSource.getRepository(Usuario);
-            const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });
+            const usuarioExistente = await usuarioRepository.findOne({ where: { usuario: usuario.usuario } });
 
             if (usuarioExistente) {
                 res.status(400).json({ message: "Nome de usuário já está em uso." });
                 return;
             }
+            
+            const senhaHash = await bcrypt.hash(usuario.senha, 10);
 
-            const senhaHash = await bcrypt.hash(senha, 10);
+            const novoUsuario = new Usuario(usuario.usuario, senhaHash, "Academico", usuario.status);            
 
-            const novoUsuario = new Usuario(usuario, senhaHash, "Academico", status);
-            await usuarioRepository.save(novoUsuario);
-
-            const novoAcademico = new Academico(nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, usuario, senhaHash,status);
+            const novoAcademico = new Academico(nome, idade, email, telefone, hardskills, softskills, matricula, curriculo, novoUsuario);
             await this.repository.criaAcademico(novoAcademico);
         
             res.status(201).json(novoAcademico);

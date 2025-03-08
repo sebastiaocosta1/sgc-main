@@ -8,7 +8,7 @@ import { Contratacoes } from "../../dominio/entidades/ContratacoesEntity";
 import { Candidaturas } from "../../dominio/entidades/CandidaturaEntity";
 import { Usuario } from "../../dominio/entidades/UsuarioEntity";
 import { Entrevista } from "../../dominio/entidades/EntrevistaEntity";
-import { Login } from "../../dominio/entidades/LoginEntity";
+
 require('dotenv').config();
 
 export const AppDataSource = new DataSource({
@@ -18,7 +18,7 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [Endereco, Administrador, Academico, Vagas, Empresa, Contratacoes, Candidaturas, Usuario, Entrevista, Login],
+    entities: [Endereco, Administrador, Academico, Vagas, Empresa, Contratacoes, Candidaturas, Usuario, Entrevista],
     synchronize: true, 
     logging: false,
 });

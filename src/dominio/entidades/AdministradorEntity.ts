@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BeforeInsert } from 'typeorm';
 import { Usuario } from './UsuarioEntity';
 
 @Entity()
@@ -15,32 +15,26 @@ export class Administrador {
   @Column({ type: 'varchar', length: 100 })
   cargo: string;
 
-  @Column({ type: 'varchar', length: 10 })
-  status: string;
-
-  @Column({ type: 'varchar', length: 255 })
-  usuario: string;
-
-  @Column({ type: 'varchar', length: 255 })
-  senha: string;
-
-  // @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true })
-  // @JoinColumn({ name: 'idusuario' })
-  // usuario: Usuario;
+  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true, cascade: true })
+  @JoinColumn({ name: 'idusuario' })
+  usuario: Usuario;
 
   constructor(
     nomeCompleto: string,
     cpf: string,
     cargo: string,
-    status: string,
-    senha: string,
-    usuario: string
+    usuario: Usuario
   ) {
     this.nomeCompleto = nomeCompleto;
     this.cpf = cpf;
-    this.cargo = cargo;
-    this.status = status;
-    this.senha = senha;
+    this.cargo = cargo;    
     this.usuario = usuario;
+  }
+  
+  @BeforeInsert()
+  async createUsuario() {
+    if (!this.usuario) {
+      this.usuario = new Usuario(this.usuario.usuario, this.usuario.senha, this.usuario.tipo, this.usuario.status);
+    }
   }
 }

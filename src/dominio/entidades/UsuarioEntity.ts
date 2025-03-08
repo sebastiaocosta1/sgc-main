@@ -1,5 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 import { Administrador } from './AdministradorEntity';
+import { Empresa } from './EmpresaEntity';
+import { Academico } from './AcademicoEntity';
 
 @Entity()
 export class Usuario {
@@ -18,8 +20,14 @@ export class Usuario {
   @Column({ type: 'varchar', length: 10 })
   status: string;
 
-  // @OneToOne(() => Administrador, (administrador) => administrador.usuario)
-  // administrador?: Administrador;
+  @OneToOne(() => Administrador, (administrador) => administrador.usuario)
+  administrador: Administrador;
+
+  @OneToOne(() => Empresa, (empresa) => empresa.usuario)
+  empresa: Empresa;
+
+  @OneToOne(() => Academico, (academico) => academico.usuario)
+  academico: Academico;
 
   constructor(usuario: string, senha: string, tipo: string, status: string) {
     this.usuario = usuario;

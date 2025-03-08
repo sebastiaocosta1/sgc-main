@@ -106,29 +106,32 @@ export default class UsuarioController {
         }
     }
 
-    async login(req: Request, res: Response){
-        const{usuario, senha} = req.body;
-
+    async login(req: Request, res: Response) {
+        const { usuario, senha } = req.body;
+    
         const usuarioRepository = AppDataSource.getRepository(Usuario);
         const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });
+    
 
+
+    
         if (!usuarioExistente) {
-            res.status(400).json({ message: "Usuário ou senha inválidos." });
-            return;
+            return res.status(400).json({ message: "Usuário ou senha inválidos." }); // ✅ Adicionado `return`
         }
-
+    
         const verificaSenha = await bcrypt.compare(senha, usuarioExistente.senha);
-
-        if(!verificaSenha){
-            res.status(400).json({ message: "Usuário ou senha inválidos." });            
+    
+        if (!verificaSenha) {
+            return res.status(400).json({ message: "Usuário ou senha inválidos...." }); // ✅ Adicionado `return`
         }
-
-        const token = jwt.sign({id: usuarioExistente.idUsuario}, process.env.JWT_PASS ?? '', {expiresIn: '8h'});
-        // console.log(token)
-        return res.json({messagem: "Usuário autenticado com sucesso!", token: token});
+    
+        const token = jwt.sign(
+            { id: usuarioExistente.idUsuario },
+            process.env.JWT_PASS ?? '',
+            { expiresIn: '8h' }
+        );
+    
+        return res.json({ message: "Usuário autenticado com sucesso!", token: token });
     }
-
-    async validaLogin(req: Request, res: Response){            
-        return res.status(200).json(req.usuarioExistente)        
-    }
+    
 }

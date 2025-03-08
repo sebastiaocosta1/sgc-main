@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from "typeorm";
 import { Empresa } from "./EmpresaEntity";
 
-@Entity("enderecos")
+@Entity("endereco")
 export class Endereco {
   @PrimaryGeneratedColumn()
   idEndereco: number;
@@ -21,18 +21,15 @@ export class Endereco {
   @Column()
   numero: string;
 
-  @Column({ type: 'varchar', length: 10 })
-  status: string;
+  @OneToOne(() => Empresa, (empresa) => empresa.enderecos)
+  endereco: Endereco;
 
-    @OneToMany(() => Empresa, (empresa) => empresa.enderecos)
-    endereco: Endereco[];
-
-  constructor(cep: string, cidade: string, estado: string, rua: string, numero: string, status: string) {
+  constructor(cep: string, cidade: string, estado: string, rua: string, numero: string) {
     this.cep = cep;
     this.cidade = cidade;
     this.estado = estado;
     this.rua = rua;
-    this.numero = numero;
-    this.status = status;
+    this.numero = numero;  
   }
+  
 }

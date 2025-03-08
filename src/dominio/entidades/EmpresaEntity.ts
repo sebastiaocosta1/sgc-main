@@ -1,9 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany, BeforeInsert } from "typeorm";
 import { Endereco } from "./EnderecoEntity";
 import { Vagas } from "./VagaEntity";
 import { Usuario } from "./UsuarioEntity";
 
-//o dilema das redes sociais
 
 @Entity()
 export class Empresa {
@@ -40,24 +39,19 @@ export class Empresa {
   @Column({ type: 'date', name: 'data_cadastramento' })
   dataCadastramento: Date;
 
-  @Column({ type: 'varchar', length: 20 })
-  status: string; 
-
-  @Column({ type: 'varchar', length: 255 })
-  usuario: string;
-
-  @Column({ type: 'varchar', length: 255 })
-  senha: string;
-
   @OneToMany(() => Endereco, (endereco) => endereco.idEndereco)
   vagas: Vagas[];
 
   @OneToMany(() => Vagas, (vagas) => vagas.empresa)
   enderecos: Endereco[];
 
-    // @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true })
-    // @JoinColumn({ name: 'idusuario' })
-    // usuario: Usuario;
+  @OneToOne(() => Endereco, (endereco) => endereco.endereco, { eager: true, cascade: true })
+  @JoinColumn()
+  endereco: Endereco;
+
+  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true, cascade: true })
+  @JoinColumn()
+  usuario: Usuario;
 
   constructor(
     cnpj: string,
@@ -70,10 +64,8 @@ export class Empresa {
     telefoneResponsavelLegal: string,
     emailResponsavelLegal: string,
     dataCadastramento: Date,
-    status: string,
-    usuario: string,
-    senha: string,
-    endereco: Endereco[]  
+    endereco: Endereco,
+    usuario: Usuario
   ) {
     this.cnpj = cnpj;
     this.inscricaoEstadual = inscricaoEstadual;
@@ -85,10 +77,25 @@ export class Empresa {
     this.telefoneResponsavelLegal = telefoneResponsavelLegal;
     this.emailResponsavelLegal = emailResponsavelLegal;
     this.dataCadastramento = dataCadastramento;
-    this.status = status;
+    this.endereco = endereco;
     this.usuario = usuario;
-    this.senha = senha;
-    this.enderecos = endereco;
     
   }
+
+    @BeforeInsert()
+    async createUsuario() {
+      if (!this.usuario) {
+        this.usuario = new Usuario(this.usuario.usuario, this.usuario.senha, this.usuario.tipo, this.usuario.status);
+      }
+    }
+   
+    @BeforeInsert()
+    async createEndereco() {
+      if (!this.endereco) {
+        this.endereco = new Endereco(this.endereco.cep,
+           this.endereco.cidade, this.endereco.estado,
+            this.endereco.rua, this.endereco.numero);
+      }
+    }
+  
 }

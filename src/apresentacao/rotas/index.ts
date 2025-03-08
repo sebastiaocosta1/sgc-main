@@ -12,7 +12,6 @@ import contratacoesRouter from "./contracoesRouter";
 
 const router = (app: express.Router) => {
    
-    app.use("/verificaLogin", usuarioRouter);
     app.use("/administradores", adminstradorRouter);
     app.use("/usuarios", usuarioRouter);
     app.use("/login", usuarioRouter);
