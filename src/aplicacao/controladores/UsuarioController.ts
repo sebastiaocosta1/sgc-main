@@ -108,6 +108,8 @@ export default class UsuarioController {
 
     async login(req: Request, res: Response) {
         const { usuario, senha } = req.body;
+
+        console.log(req.body)
     
         const usuarioRepository = AppDataSource.getRepository(Usuario);
         const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });
@@ -131,7 +133,7 @@ export default class UsuarioController {
             { expiresIn: '8h' }
         );
     
-        return res.json({ message: "Usuário autenticado com sucesso!", token: token });
+        return res.json({ message: "Usuário autenticado com sucesso!", usuarioExistente, token: token});
     }
     
 }

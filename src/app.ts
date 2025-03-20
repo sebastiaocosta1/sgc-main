@@ -6,7 +6,7 @@ import cors = require("cors");
 require('dotenv').config();
 
 const corsOptions = {
-  origin: ["http://127.0.0.1:5500"], 
+  origin: ["http://localhost:3000"], 
   methods: ["GET", "POST", "PUT", "DELETE"],             
   allowedHeaders: ["Content-Type", "Authorization"],    
   credentials: true                                      
