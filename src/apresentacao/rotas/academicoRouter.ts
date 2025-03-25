@@ -12,10 +12,10 @@ const academicoRepository = new AcademicoRepository(
 
 const academicoController = new AcademicoController(academicoRepository);
 
-router.post("/", authMiddleware, academicoController.criaAcademico.bind(academicoController));
-router.get("/", authMiddleware, academicoController.listaAcademicos.bind(academicoController));
-router.get("/:id", authMiddleware, academicoController.listaAcademico.bind(academicoController));
-router.put("/:id", authMiddleware, academicoController.atualizaAcademico.bind(academicoController));
-router.delete("/:id", authMiddleware, academicoController.deletaAcademico.bind(academicoController));
+router.post("/", academicoController.criaAcademico.bind(academicoController));
+router.get("/",  academicoController.listaAcademicos.bind(academicoController));
+router.get("/:id",academicoController.listaAcademico.bind(academicoController));
+router.put("/:id", academicoController.atualizaAcademico.bind(academicoController));
+router.delete("/:id", academicoController.deletaAcademico.bind(academicoController));
 
 export default router;
