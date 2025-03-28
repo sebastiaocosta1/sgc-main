@@ -12,10 +12,10 @@ const vagaRepository = new VagaRepository(
 
 const vagaController = new VagaController(vagaRepository);
 
-router.post("/", authMiddleware, vagaController.criaVaga.bind(vagaController));
-router.get("/", authMiddleware, vagaController.listaVagas.bind(vagaController));
-router.get("/:id", authMiddleware, vagaController.listaVaga.bind(vagaController));
-router.put("/:id", authMiddleware, vagaController.atualizaVaga.bind(vagaController));
-router.delete("/:id", authMiddleware, vagaController.deletaVaga.bind(vagaController));
+router.post("/",  vagaController.criaVaga.bind(vagaController));
+router.get("/",  vagaController.listaVagas.bind(vagaController));
+router.get("/:id",  vagaController.listaVaga.bind(vagaController));
+router.put("/:id",  vagaController.atualizaVaga.bind(vagaController));
+router.delete("/:id",  vagaController.deletaVaga.bind(vagaController));
 
 export default router;
