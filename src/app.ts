@@ -15,7 +15,7 @@ const corsOptions = {
 const app = express();
 app.use(express.json());
 app.use(cors(corsOptions));
-router(app);
+router(router);
 
 AppDataSource.initialize().then( () => {
   console.log("Banco de dados conecetado")
