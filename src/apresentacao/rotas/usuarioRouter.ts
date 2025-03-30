@@ -12,7 +12,6 @@ const usuarioRepository = new UsuarioRepository(
 
 const usuarioController = new UsuarioController(usuarioRepository);
 
-
 router.post("/login", usuarioController.login.bind(usuarioController));
 router.post("/", usuarioController.criaUsuario.bind(usuarioController));
 router.get("/",  usuarioController.listaUsuarios.bind(usuarioController));
