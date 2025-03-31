@@ -8,11 +8,13 @@ import { authMiddleware } from "../../aplicacao/meddlewares/authMiddleare";
 const router = express.Router();
 
 const empresaRepository = new EmpresaRepository(
-    AppDataSource.getRepository("Empresa")
+    AppDataSource.getRepository("Empresa"),
+    AppDataSource.getRepository("Usuario"),
+    AppDataSource.getRepository("Endereco")
 );
-const userRepository = new UsuarioRepository(
-    AppDataSource.getRepository("Usuario")
-);
+// const userRepository = new UsuarioRepository(
+//     AppDataSource.getRepository("Usuario")
+// );
 
 const empresaController = new EmpresaController(empresaRepository);
 
