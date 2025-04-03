@@ -19,9 +19,9 @@ const administradorRepository = new AdministradorRepository(
 const administradorController = new AdministradorController(administradorRepository);
 
 router.post("/", administradorController.criaAdministrador.bind(administradorController));
-router.get("/",  administradorController.listaAdministradores.bind(administradorController));
-router.get("/:id",  administradorController.listaAdministrador.bind(administradorController));
-router.put("/:id",  administradorController.atualizaAdministrador.bind(administradorController));
-router.delete("/:id",  administradorController.deletaAdministrador.bind(administradorController));
+router.get("/",   authMiddleware, administradorController.listaAdministradores.bind(administradorController));
+router.get("/:id",   authMiddleware, administradorController.listaAdministrador.bind(administradorController));
+router.put("/:id",  authMiddleware,  administradorController.atualizaAdministrador.bind(administradorController));
+router.delete("/:id",   authMiddleware, administradorController.deletaAdministrador.bind(administradorController));
 
 export default router;

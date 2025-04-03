@@ -18,9 +18,9 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    ssl: {
-        rejectUnauthorized: false // necessário para evitar erro com certificado
-      },
+    // ssl: {
+    //     rejectUnauthorized: false // necessário para evitar erro com certificado
+    //   },
     entities: [Endereco, Administrador, Academico, Vagas, Empresa, Contratacoes, Candidaturas, Usuario, Entrevista],
     synchronize: true, 
     logging: false,

@@ -14,8 +14,8 @@ export class Administrador {
 
   @Column({ type: 'varchar', length: 100 })
   cargo: string;
-
-  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true, cascade: true })
+cascade: true 
+  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true, cascade: true,})
   @JoinColumn({ name: 'idusuario' })
   usuario: Usuario;
 

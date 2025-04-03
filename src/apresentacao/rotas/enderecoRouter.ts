@@ -13,9 +13,9 @@ const enderecoRepository = new EnderecoRepository(
 const enderecoController = new EnderecoController(enderecoRepository);
 
 router.post("/", enderecoController.criaEndereco.bind(enderecoController));
-router.get("/",   enderecoController.listaEnderecos.bind(enderecoController));
-router.get("/:id",   enderecoController.listaEndereco.bind(enderecoController));
-router.put("/:id",   enderecoController.atualizaEndereco.bind(enderecoController));
-// router.delete("/:id", enderecoController.deletaEndereco.bind(enderecoController));
+router.get("/",    authMiddleware, enderecoController.listaEnderecos.bind(enderecoController));
+router.get("/:id",    authMiddleware, enderecoController.listaEndereco.bind(enderecoController));
+router.put("/:id",    authMiddleware, enderecoController.atualizaEndereco.bind(enderecoController));
+//router.delete("/:id", enderecoController.deletaEndereco.bind(enderecoController));
 
 export default router;

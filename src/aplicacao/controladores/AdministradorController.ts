@@ -101,19 +101,24 @@ export default class AdministradorController {
                     return;
                 }
             }
-
-            const senhaHash = usuario.senha ? await bcrypt.hash(usuario.senha, 10) : undefined;
-
+            const dadosUsuario: Partial<Usuario> = {
+                usuario: usuario.usuario,
+                tipo: usuario.tipo,
+                status: usuario.status,
+            };
+            
+            // Só atualiza a senha se uma nova senha foi enviada e não está vazia
+            if (usuario.senha && usuario.senha.trim() !== "") {
+                dadosUsuario.senha = await bcrypt.hash(usuario.senha, 10);
+            }
+            
             const dadosAtualizados: Partial<Administrador> = {
                 nomeCompleto,
                 cpf,
                 cargo,
-                usuario: {
-                    ...usuario,
-                    senha: senhaHash ?? usuario.senha,
-                },
+                usuario: dadosUsuario as Usuario,
             };
-
+            
             const { success, message } = await this.repository.atualizaAdministrador(
                 Number(id),
                 dadosAtualizados as Administrador

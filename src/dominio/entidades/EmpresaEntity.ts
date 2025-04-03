@@ -45,11 +45,11 @@ export class Empresa {
   @OneToMany(() => Vagas, (vagas) => vagas.empresa)
   enderecos: Endereco[];
 
-  @OneToOne(() => Endereco, (endereco) => endereco.endereco, { eager: true, cascade: true })
+  @OneToOne(() => Endereco, (endereco) => endereco.endereco, { eager: true, cascade: true, })
   @JoinColumn()
   endereco: Endereco;
 
-  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true, cascade: true })
+  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true, cascade: true, })
   @JoinColumn()
   usuario: Usuario;
 
