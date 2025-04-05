@@ -7,7 +7,8 @@ import { authMiddleware } from "../../aplicacao/meddlewares/authMiddleare";
 const router = express.Router();
 
 const academicoRepository = new AcademicoRepository(
-    AppDataSource.getRepository("Academico")
+    AppDataSource.getRepository("Academico"),
+    AppDataSource.getRepository("Usuario")
 );
 
 const academicoController = new AcademicoController(academicoRepository);
