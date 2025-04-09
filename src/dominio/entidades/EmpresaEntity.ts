@@ -37,19 +37,16 @@ export class Empresa {
   emailResponsavelLegal: string;
 
   @Column({ type: 'date', name: 'data_cadastramento' })
-  dataCadastramento: Date;
-
-  @OneToMany(() => Endereco, (endereco) => endereco.idEndereco)
-  vagas: Vagas[];
+  dataCadastramento: Date; 
 
   @OneToMany(() => Vagas, (vagas) => vagas.empresa)
-  enderecos: Endereco[];
+  vagas: Vagas[];
 
-  @OneToOne(() => Endereco, (endereco) => endereco.endereco, { eager: true, cascade: true, })
+  @OneToOne(() => Endereco, (endereco) => endereco.empresa, { eager: true, cascade: true })
   @JoinColumn()
   endereco: Endereco;
 
-  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true, cascade: true, })
+  @OneToOne(() => Usuario, (usuario) => usuario.empresa, { eager: true, cascade: true })
   @JoinColumn()
   usuario: Usuario;
 

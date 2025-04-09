@@ -12,6 +12,8 @@ export default class AdministradorController {
         try {
             const { nomeCompleto, cpf, cargo, usuario } = req.body as Administrador;
 
+            // console.log(req.body)
+
             if (!nomeCompleto || !cpf || !cargo || !usuario.status || !usuario.senha || !usuario.usuario) {
                 res.status(400).json({ message: "Todos os campos são obrigatórios." });
                 return;

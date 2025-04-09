@@ -9,96 +9,94 @@ import { Endereco } from "../../dominio/entidades/EnderecoEntity";
 export default class EmpresaController {
   constructor(private repository: InterfaceEmpresaRepository) {}
 
-  async criaEmpresa(req: Request, res: Response): Promise<void> {
-    try {
-      const {
-        cnpj,
-        inscricaoEstadual,
-        inscricaoMunicipal,
-        nomeFantasia,
-        razaoSocial,
-        telefoneComercial,
-        nomeResponsavelLegal,
-        telefoneResponsavelLegal,
-        emailResponsavelLegal,
-        dataCadastramento,
-        endereco,
-        usuario,
-      } = req.body as Empresa;
+async criaEmpresa(req: Request, res: Response): Promise<void> {
+  try {
+    const {
+      cnpj,
+      inscricaoEstadual,
+      inscricaoMunicipal,
+      nomeFantasia,
+      razaoSocial,
+      telefoneComercial,
+      nomeResponsavelLegal,
+      telefoneResponsavelLegal,
+      emailResponsavelLegal,
+      endereco,
+      usuario,
+    } = req.body as Empresa; // REMOVIDO: dataCadastramento
 
-      if (
-        !cnpj ||
-        !nomeFantasia ||
-        !inscricaoEstadual ||
-        !inscricaoMunicipal ||
-        !razaoSocial ||
-        !telefoneComercial ||
-        !nomeResponsavelLegal ||
-        !telefoneResponsavelLegal ||
-        !emailResponsavelLegal ||
-        !dataCadastramento ||
-        !endereco ||
-        !usuario
-      ) {
-        res.status(400).json({ message: "Todos os campos obrigatórios devem ser fornecidos." });
-        return;
-      }
-
-      const usuarioRepository = AppDataSource.getRepository(Usuario);
-      const empresaExistente = await this.repository.listaEmpresas();
-
-      const cnpjDuplicado = empresaExistente.find(emp => emp.cnpj === cnpj);
-      if (cnpjDuplicado) {
-        res.status(400).json({ message: "CNPJ já cadastrado." });
-        return;
-      }
-
-      const emailDuplicado = empresaExistente.find(emp => emp.emailResponsavelLegal === emailResponsavelLegal);
-      if (emailDuplicado) {
-        res.status(400).json({ message: "E-mail do responsável já cadastrado." });
-        return;
-      }
-
-      const usuarioExistente = await usuarioRepository.findOne({ where: { usuario: usuario.usuario } });
-      if (usuarioExistente) {
-        res.status(400).json({ message: "Nome de usuário já está em uso." });
-        return;
-      }
-
-      const senhaHash = await bcrypt.hash(usuario.senha, 10);
-
-      const novoEndereco = new Endereco(
-        endereco.cep,
-        endereco.cidade,
-        endereco.estado,
-        endereco.rua,
-        endereco.numero
-      );
-      const novoUsuario = new Usuario(usuario.usuario, senhaHash, "Empresa", usuario.status);
-
-      const novaEmpresa = new Empresa(
-        cnpj,
-        inscricaoEstadual,
-        inscricaoMunicipal,
-        nomeFantasia,
-        razaoSocial,
-        telefoneComercial,
-        nomeResponsavelLegal,
-        telefoneResponsavelLegal,
-        emailResponsavelLegal,
-        new Date(dataCadastramento),
-        novoEndereco,
-        novoUsuario
-      );
-
-      await this.repository.criaEmpresa(novaEmpresa);
-
-      res.status(201).json(novaEmpresa);
-    } catch (error) {
-      console.error("Erro ao criar empresa:", error);
-      res.status(500).json({ message: "Erro interno do servidor." });
+    if (
+      !cnpj ||
+      !nomeFantasia ||
+      !inscricaoEstadual ||
+      !inscricaoMunicipal ||
+      !razaoSocial ||
+      !telefoneComercial ||
+      !nomeResponsavelLegal ||
+      !telefoneResponsavelLegal ||
+      !emailResponsavelLegal ||
+      !endereco ||
+      !usuario
+    ) {
+      res.status(400).json({ message: "Todos os campos obrigatórios devem ser fornecidos." });
+      return;
     }
+
+    const usuarioRepository = AppDataSource.getRepository(Usuario);
+    const empresaExistente = await this.repository.listaEmpresas();
+
+    const cnpjDuplicado = empresaExistente.find(emp => emp.cnpj === cnpj);
+    if (cnpjDuplicado) {
+      res.status(400).json({ message: "CNPJ já cadastrado." });
+      return;
+    }
+
+    const emailDuplicado = empresaExistente.find(emp => emp.emailResponsavelLegal === emailResponsavelLegal);
+    if (emailDuplicado) {
+      res.status(400).json({ message: "E-mail do responsável já cadastrado." });
+      return;
+    }
+
+    const usuarioExistente = await usuarioRepository.findOne({ where: { usuario: usuario.usuario } });
+    if (usuarioExistente) {
+      res.status(400).json({ message: "Nome de usuário já está em uso." });
+      return;
+    }
+
+    const senhaHash = await bcrypt.hash(usuario.senha, 10);
+
+    const novoEndereco = new Endereco(
+      endereco.cep,
+      endereco.cidade,
+      endereco.estado,
+      endereco.rua,
+      endereco.numero
+    );
+    const novoUsuario = new Usuario(usuario.usuario, senhaHash, "Empresa", usuario.status);
+
+    const novaEmpresa = new Empresa(
+      cnpj,
+      inscricaoEstadual,
+      inscricaoMunicipal,
+      nomeFantasia,
+      razaoSocial,
+      telefoneComercial,
+      nomeResponsavelLegal,
+      telefoneResponsavelLegal,
+      emailResponsavelLegal,
+      new Date(), // ✅ DATA ATUAL com hora correta
+      novoEndereco,
+      novoUsuario
+    );
+
+    await this.repository.criaEmpresa(novaEmpresa);
+
+    res.status(201).json(novaEmpresa);
+  } catch (error) {
+    console.error("Erro ao criar empresa:", error);
+    res.status(500).json({ message: "Erro interno do servidor." });
   }
+}
 
   async listaEmpresas(req: Request, res: Response): Promise<void> {
     try {
@@ -187,7 +185,7 @@ export default class EmpresaController {
         nomeResponsavelLegal,
         telefoneResponsavelLegal,
         emailResponsavelLegal,
-        dataCadastramento: new Date(dataCadastramento),
+        dataCadastramento,
         endereco,
         usuario: {
           ...usuario,

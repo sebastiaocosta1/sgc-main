@@ -43,7 +43,7 @@ export default class AcademicoController {
             return;
           }
       
-          const usuarioData = JSON.parse(usuario); // ⚠️ Lembre-se: vem como string do front
+          const usuarioData = JSON.parse(usuario); 
           const usuarioRepository = AppDataSource.getRepository(Usuario);
           const usuarioExistente = await usuarioRepository.findOne({ where: { usuario: usuarioData.usuario } });
       
@@ -106,26 +106,60 @@ export default class AcademicoController {
     }
 
     async atualizaAcademico(req: Request, res: Response): Promise<void> {
-        try {
-            const { id } = req.params;
-            const dadosAtualizados = req.body as Academico;
-
-            const { success, message } = await this.repository.atualizaAcademico(
-                Number(id),
-                dadosAtualizados
-            );
-
-            if (!success) {
-                res.status(404).json({ message });
-                return;
-            }
-
-            res.sendStatus(204);
-        } catch (error) {
-            console.error("Erro ao atualizar acadêmico:", error);
-            res.status(500).json({ message: "Erro interno do servidor." });
+      try {
+        const { id } = req.params;
+    
+        const {
+          nome,
+          idade,
+          email,
+          telefone,
+          hardskills,
+          softskills,
+          matricula,
+          usuario,
+        } = req.body;
+    
+        const arquivo = req.file;
+    
+        const usuarioData = JSON.parse(usuario);
+        const usuarioRepository = AppDataSource.getRepository(Usuario);
+    
+        const academicoExistente = await this.repository.listaAcademico(Number(id));
+        if (!academicoExistente) {
+          res.status(404).json({ message: "Acadêmico não encontrado." });
+          return;
         }
+            
+        academicoExistente.usuario.usuario = usuarioData.usuario;
+        academicoExistente.usuario.status = usuarioData.status;
+        if (usuarioData.senha && usuarioData.senha.trim() !== "") {
+          const senhaHash = await bcrypt.hash(usuarioData.senha, 10);
+          academicoExistente.usuario.senha = senhaHash;
+        }
+            
+        academicoExistente.nome = nome;
+        academicoExistente.idade = idade;
+        academicoExistente.email = email;
+        academicoExistente.telefone = telefone;
+        academicoExistente.hardskills = hardskills;
+        academicoExistente.softskills = softskills;
+        academicoExistente.matricula = matricula;
+            
+        if (arquivo) {
+          const caminhoCurriculo = `/curriculos/${arquivo.filename}`;
+          academicoExistente.curriculo = caminhoCurriculo;
+        }
+    
+        await this.repository.atualizaAcademico(Number(id), academicoExistente);
+    
+        res.sendStatus(204);
+      } catch (error) {
+        console.error("Erro ao atualizar acadêmico:", error);
+        res.status(500).json({ message: "Erro interno do servidor." });
+      }
     }
+    
 
     async deletaAcademico(req: Request, res: Response): Promise<void> {
         try {

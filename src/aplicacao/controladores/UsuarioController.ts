@@ -13,14 +13,13 @@ export default class UsuarioController {
     async login(req: Request, res: Response) {
         const { usuario, senha } = req.body;
 
-        console.log(req.body)
+        // console.log(req.body)
     
         const usuarioRepository = AppDataSource.getRepository(Usuario);
         const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });   
-
     
         if (!usuarioExistente) {
-            return res.status(400).json({ message: "Usuário ou senha inválidos." }); // ✅ Adicionado `return`
+            return res.status(400).json({ message: "Usuário ou senha inválidos." });
         }
     
         const verificaSenha = await bcrypt.compare(senha, usuarioExistente.senha);
@@ -38,8 +37,7 @@ export default class UsuarioController {
         return res.json({ message: "Usuário autenticado com sucesso!", usuarioExistente, token: token});
     }
     
-   
-    async criaUsuario(req: Request, res: Response): Promise<void> {
+       async criaUsuario(req: Request, res: Response): Promise<void> {
         try {
             const { usuario, senha, tipo, status } = <Usuario>req.body;
            

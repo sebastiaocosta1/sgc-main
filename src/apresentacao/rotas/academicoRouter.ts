@@ -14,12 +14,10 @@ const academicoRepository = new AcademicoRepository(
 
 const academicoController = new AcademicoController(academicoRepository);
 
-// ✅ agora trata o upload do currículo (campo "curriculo")
 router.post("/", upload.single("curriculo"), academicoController.criaAcademico.bind(academicoController));
-
 router.get("/", authMiddleware, academicoController.listaAcademicos.bind(academicoController));
 router.get("/:id", authMiddleware, academicoController.listaAcademico.bind(academicoController));
-router.put("/:id", authMiddleware, academicoController.atualizaAcademico.bind(academicoController));
+router.put("/:id", authMiddleware, upload.single("curriculo"), academicoController.atualizaAcademico.bind(academicoController));
 router.delete("/:id", authMiddleware, academicoController.deletaAcademico.bind(academicoController));
 
 export default router;
