@@ -85,4 +85,9 @@ export default class AcademicoRepository implements InterfaceAcademicoRepository
       return { success: false, message: "Erro ao excluir o acadêmico." };
     }
   }
+
+  async buscaPorMatricula(matricula: string): Promise<Academico | null> {
+    return await this.repository.findOne({ where: { matricula }, relations: ["usuario"] });
+  }
+  
 }
