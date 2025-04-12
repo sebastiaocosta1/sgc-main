@@ -21,6 +21,7 @@ export default class VagasController {
                 empresa,
             } = req.body as Vagas;
 
+     
             if (
                 !cargo ||
                 !salario ||
