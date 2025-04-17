@@ -37,7 +37,7 @@ export class Vagas {
   @Column({ type: 'varchar', length: 20, name: 'status_cadastro' })
   statusCadastro: string; 
 
-  @ManyToOne(() => Empresa, (empresa) => empresa.vagas)
+  @ManyToOne(() => Empresa, (empresa) => empresa.vagas, { eager: true })
   empresa: Empresa;
 
   @OneToMany(() => Candidaturas, (candidaturas) => candidaturas.vaga)

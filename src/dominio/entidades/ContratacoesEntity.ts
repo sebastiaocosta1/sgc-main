@@ -9,7 +9,7 @@ export class Contratacoes {
   @Column({ type: 'date', name: 'data_contratacao' })
   dataContratacao: Date;
 
-  @OneToOne(() => Candidaturas, (candidatura) => candidatura.academico, {eager: true})
+  @OneToOne(() => Candidaturas, (candidatura) => candidatura.academico)
   @JoinColumn({ name: 'idcandidatura' })
   candidatura: Candidaturas;
 

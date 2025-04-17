@@ -14,8 +14,8 @@ export class Administrador {
 
   @Column({ type: 'varchar', length: 100 })
   cargo: string;
-cascade: true 
-  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true, cascade: true,})
+  cascade: true
+  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true, cascade: true, })
   @JoinColumn({ name: 'idusuario' })
   usuario: Usuario;
 
@@ -27,10 +27,10 @@ cascade: true
   ) {
     this.nomeCompleto = nomeCompleto;
     this.cpf = cpf;
-    this.cargo = cargo;    
+    this.cargo = cargo;
     this.usuario = usuario;
   }
-  
+
   @BeforeInsert()
   async createUsuario() {
     if (!this.usuario) {
