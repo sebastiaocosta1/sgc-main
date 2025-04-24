@@ -31,7 +31,7 @@ export class Candidaturas {
   @JoinColumn()
   academico: Academico;  
 
-  @OneToOne(() => Contratacoes, (contratacao) => contratacao.candidatura, { eager: true })
+  @OneToOne(() => Contratacoes, (contratacao) => contratacao.candidatura)
   contratacao: Contratacoes;
 
   @OneToOne(() => Entrevista, (entrevista) => entrevista.candidatura)
