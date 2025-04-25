@@ -4,17 +4,16 @@ import InterfaceEntrevistaRepository from "../../dominio/repositorios/interfaces
 
 export default class EntrevistaController {
     constructor(private repository: InterfaceEntrevistaRepository) {}
-   
+
     async criaEntrevista(req: Request, res: Response): Promise<void> {
         try {
             const { data, hora, modalidade, texto, respostaConvidado, candidatura } = <Entrevista>req.body;
-           
+
             if (!data || !hora || !modalidade || !texto || !respostaConvidado || !candidatura) {
                 res.status(400).json({ message: "Todos os campos obrigatórios devem ser preenchidos." });
                 return;
             }
-            //console.log(req.body)
-            
+
             const novaEntrevista = new Entrevista(data, hora, modalidade, texto, respostaConvidado, candidatura);
 
             await this.repository.criaEntrevista(novaEntrevista);
@@ -77,7 +76,15 @@ export default class EntrevistaController {
                 return;
             }
 
-            res.sendStatus(204);
+            const entrevistaAtualizada = await this.repository.listaEntrevista(Number(id));
+
+            if (!entrevistaAtualizada) {
+                res.status(404).json({ message: "Entrevista não encontrada após atualização." });
+                return;
+            }
+
+            res.status(200).json(entrevistaAtualizada);
+
         } catch (error) {
             console.error("Erro ao atualizar entrevista:", error);
             res.status(500).json({ message: "Erro interno do servidor." });

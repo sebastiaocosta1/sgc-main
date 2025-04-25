@@ -13,7 +13,7 @@ import { Entrevista } from './EntrevistaEntity';
 import { Academico } from './AcademicoEntity';
 
 @Entity()
-@Unique(['academico', 'vaga']) // Impede que um acadêmico se candidate mais de uma vez à mesma vaga
+@Unique(['academico', 'vaga']) 
 export class Candidaturas {
   @PrimaryGeneratedColumn({ name: 'idcandidatura' })
   idCandidatura: number;
