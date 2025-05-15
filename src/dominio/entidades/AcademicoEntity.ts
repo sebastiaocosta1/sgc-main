@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  OneToMany,
+  JoinColumn,
+  BeforeInsert,
+} from 'typeorm';
 import { Candidaturas } from './CandidaturaEntity';
 import { Usuario } from './UsuarioEntity';
 
@@ -31,10 +39,13 @@ export class Academico {
   @Column({ type: 'text', nullable: true })
   curriculo: string;
 
-  @OneToOne(() => Candidaturas, (candidatura) => candidatura.academico)
-  candidatura: Candidaturas;
+  @OneToMany(() => Candidaturas, (candidatura) => candidatura.academico)
+  candidaturas: Candidaturas[];
 
-  @OneToOne(() => Usuario, (usuario) => usuario.administrador, { eager: true, cascade: true })
+  @OneToOne(() => Usuario, (usuario) => usuario.administrador, {
+    eager: true,
+    cascade: true,
+  })
   @JoinColumn({ name: 'idusuario' })
   usuario: Usuario;
 
@@ -47,8 +58,7 @@ export class Academico {
     softskills: string,
     matricula: string,
     curriculo: string,
-    usuario: Usuario,
-     
+    usuario: Usuario
   ) {
     this.nome = nome;
     this.idade = idade;
@@ -58,13 +68,18 @@ export class Academico {
     this.softskills = softskills;
     this.matricula = matricula;
     this.curriculo = curriculo;
-    this.usuario = usuario;  
+    this.usuario = usuario;
   }
 
   @BeforeInsert()
   async createUsuario() {
-  if (!this.usuario) {
-      this.usuario = new Usuario(this.usuario.usuario, this.usuario.senha, this.usuario.tipo, this.usuario.status);
+    if (!this.usuario) {
+      this.usuario = new Usuario(
+        this.usuario.usuario,
+        this.usuario.senha,
+        this.usuario.tipo,
+        this.usuario.status
+      );
     }
   }
 }

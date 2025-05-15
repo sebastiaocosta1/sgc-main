@@ -18,6 +18,12 @@ export class Vagas {
 
   @Column({ type: 'varchar', length: 100 })
   horarioExpediente: string; 
+  
+  @Column({ type: 'text' })
+  hardskillsDesejadas: string;
+
+  @Column({ type: 'text' })
+  softskillsDesejadas: string;
 
   @Column({ type: 'text', name: 'principais_atividades' })
   principaisAtividades: string;
@@ -31,20 +37,19 @@ export class Vagas {
   @Column({ type: 'varchar', length: 20, name: 'status_cadastro' })
   statusCadastro: string; 
 
-  @ManyToOne(() => Empresa, (empresa) => empresa.vagas)
+  @ManyToOne(() => Empresa, (empresa) => empresa.vagas, { eager: true })
   empresa: Empresa;
 
   @OneToMany(() => Candidaturas, (candidaturas) => candidaturas.vaga)
   candidaturas: Candidaturas[];
-
-  @OneToMany(() => Vagas, (vagas) => vagas.empresa)
-  vagas: Vagas[];
 
   constructor(
     cargo: string,
     salario: number,
     tipo: string,
     horarioExpediente: string,
+    hardskillsDesejadas: string,
+    softskillsDesejadas: string,
     principaisAtividades: string,
     dataPublicacao: Date,
     statusVaga: string,
@@ -55,10 +60,13 @@ export class Vagas {
     this.salario = salario;
     this.tipo = tipo;
     this.horarioExpediente = horarioExpediente;
+    this.hardskillsDesejadas = hardskillsDesejadas;
+    this.softskillsDesejadas = softskillsDesejadas;
     this.principaisAtividades = principaisAtividades;
     this.dataPublicacao = dataPublicacao;
     this.statusVaga = statusVaga;
     this.statusCadastro = statusCadastro;
     this.empresa = empresa;
   }
+  
 }

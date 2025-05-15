@@ -13,10 +13,11 @@ const contratacaoRepository = new ContratacaoRepository(
 
 const contratacaoController = new ContratacaoController(contratacaoRepository);
 
-router.post("/", authMiddleware, contratacaoController.criaContratacao.bind(contratacaoController));
-router.get("/", authMiddleware, contratacaoController.listaContratacoes.bind(contratacaoController));
-router.get("/:id", authMiddleware, contratacaoController.listaContratacao.bind(contratacaoController));
-router.put("/:id", authMiddleware, contratacaoController.atualizaContratacao.bind(contratacaoController));
-router.delete("/:id", authMiddleware, contratacaoController.deletaContratacao.bind(contratacaoController));
+router.post("/",  contratacaoController.criaContratacao.bind(contratacaoController));
+router.get("/",   authMiddleware ,contratacaoController.listaContratacoes.bind(contratacaoController));
+router.get("/:id",   authMiddleware ,contratacaoController.listaContratacao.bind(contratacaoController));
+router.put("/:id",   authMiddleware ,contratacaoController.atualizaContratacao.bind(contratacaoController));
+router.delete("/:id",  authMiddleware ,contratacaoController.deletaContratacao.bind(contratacaoController));
 
 export default router;
+ 

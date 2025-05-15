@@ -12,13 +12,12 @@ const usuarioRepository = new UsuarioRepository(
 
 const usuarioController = new UsuarioController(usuarioRepository);
 
-
 router.post("/login", usuarioController.login.bind(usuarioController));
 router.post("/", usuarioController.criaUsuario.bind(usuarioController));
-router.get("/", authMiddleware, usuarioController.listaUsuarios.bind(usuarioController));
-router.get("/:id", authMiddleware, usuarioController.listaUsuario.bind(usuarioController));
-router.put("/:id", authMiddleware, usuarioController.atualizaUsuario.bind(usuarioController));
-router.delete("/:id", authMiddleware, usuarioController.deletaUsuario.bind(usuarioController));
+router.get("/",  usuarioController.listaUsuarios.bind(usuarioController));
+router.get("/:id", usuarioController.listaUsuario.bind(usuarioController));
+router.put("/:id", usuarioController.atualizaUsuario.bind(usuarioController));
+router.delete("/:id", usuarioController.deletaUsuario.bind(usuarioController));
 
 
 export default router;

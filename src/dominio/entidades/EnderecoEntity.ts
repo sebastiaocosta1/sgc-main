@@ -21,8 +21,8 @@ export class Endereco {
   @Column()
   numero: string;
 
-  @OneToOne(() => Empresa, (empresa) => empresa.enderecos)
-  endereco: Endereco;
+  @OneToOne(() => Empresa, (empresa) => empresa.endereco)
+  empresa: Empresa;
 
   constructor(cep: string, cidade: string, estado: string, rua: string, numero: string) {
     this.cep = cep;

@@ -9,13 +9,41 @@ type JwtPayload = { id: number};
 
 export default class UsuarioController {
     constructor(private repository: InterfaceUsuarioRepository) {}
-   
-    async criaUsuario(req: Request, res: Response): Promise<void> {
+
+    async login(req: Request, res: Response) {
+        const { usuario, senha } = req.body;
+
+        // console.log(req.body)
+    
+        const usuarioRepository = AppDataSource.getRepository(Usuario);
+        const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });   
+    
+        if (!usuarioExistente) {
+            return res.status(400).json({ message: "Usuário ou senha inválidos." });
+        }
+    
+        const verificaSenha = await bcrypt.compare(senha, usuarioExistente.senha);
+    
+        if (!verificaSenha) {
+            return res.status(400).json({ message: "Usuário ou senha inválidos...." }); // ✅ Adicionado `return`
+        }
+    
+        const token = jwt.sign(
+            { id: usuarioExistente.idUsuario },
+            process.env.JWT_PASS ?? '',
+            { expiresIn: '8h' }
+        );
+    
+        return res.json({ message: "Usuário autenticado com sucesso!", usuarioExistente, token: token});
+    }
+    
+       async criaUsuario(req: Request, res: Response): Promise<void> {
         try {
             const { usuario, senha, tipo, status } = <Usuario>req.body;
            
             if (!usuario || !senha || !tipo || !status) {
                 res.status(400).json({ message: "Todos os campos são obrigatórios." });
+                //console.log(req.body);
                 return;
             }
             
@@ -104,34 +132,5 @@ export default class UsuarioController {
             console.error("Erro ao deletar usuário:", error);
             res.status(500).json({ message: "Erro interno do servidor." });
         }
-    }
-
-    async login(req: Request, res: Response) {
-        const { usuario, senha } = req.body;
-    
-        const usuarioRepository = AppDataSource.getRepository(Usuario);
-        const usuarioExistente = await usuarioRepository.findOne({ where: { usuario } });
-    
-
-
-    
-        if (!usuarioExistente) {
-            return res.status(400).json({ message: "Usuário ou senha inválidos." }); // ✅ Adicionado `return`
-        }
-    
-        const verificaSenha = await bcrypt.compare(senha, usuarioExistente.senha);
-    
-        if (!verificaSenha) {
-            return res.status(400).json({ message: "Usuário ou senha inválidos...." }); // ✅ Adicionado `return`
-        }
-    
-        const token = jwt.sign(
-            { id: usuarioExistente.idUsuario },
-            process.env.JWT_PASS ?? '',
-            { expiresIn: '8h' }
-        );
-    
-        return res.json({ message: "Usuário autenticado com sucesso!", token: token });
-    }
-    
+    }    
 }

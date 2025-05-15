@@ -18,7 +18,14 @@ export default class EntrevistaRepository implements InterfaceEntrevistaReposito
     }
 
     async listaEntrevista(id: number): Promise<Entrevista | null> {
-        return await this.repository.findOne({ where: { idEntrevista: id } });
+        return await this.repository.findOne({
+            where: { idEntrevista: id },
+            relations: {
+                candidatura: {
+                    academico: true,
+                },
+            },
+        });
     }
 
     async atualizaEntrevista(

@@ -77,7 +77,8 @@ export default class EnderecoController {
         }
     }
 
-    // async deletaEndereco(req: Request, res: Response): Promise<void> {
+    // async deletaEndereco(req: Request, res: 
+    // gsfdgsfdgsfdgResponse): Promise<void> {
     //     try {
     //         const { id } = req.params;
 

@@ -8,18 +8,20 @@ import { authMiddleware } from "../../aplicacao/meddlewares/authMiddleare";
 const router = express.Router();
 
 const empresaRepository = new EmpresaRepository(
-    AppDataSource.getRepository("Empresa")
+    AppDataSource.getRepository("Empresa"),
+    AppDataSource.getRepository("Usuario"),
+    AppDataSource.getRepository("Endereco")
 );
-const userRepository = new UsuarioRepository(
-    AppDataSource.getRepository("Usuario")
-);
+// const userRepository = new UsuarioRepository(
+//     AppDataSource.getRepository("Usuario")
+// );
 
 const empresaController = new EmpresaController(empresaRepository);
 
 router.post("/", empresaController.criaEmpresa.bind(empresaController));
-router.get("/", authMiddleware, empresaController.listaEmpresas.bind(empresaController));
-router.get("/:id", authMiddleware, empresaController.listaEmpresa.bind(empresaController));
-router.put("/:id", authMiddleware, empresaController.atualizaEmpresa.bind(empresaController));
-router.delete("/:id", authMiddleware, empresaController.deletaEmpresa.bind(empresaController));
+router.get("/",   authMiddleware, empresaController.listaEmpresas.bind(empresaController));
+router.get("/:id",   authMiddleware, empresaController.listaEmpresa.bind(empresaController));
+router.put("/:id",   authMiddleware, empresaController.atualizaEmpresa.bind(empresaController));
+router.delete("/:id",   authMiddleware, empresaController.deletaEmpresa.bind(empresaController));
 
 export default router;

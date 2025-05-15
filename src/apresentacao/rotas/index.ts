@@ -10,7 +10,7 @@ import candidaturaRouter from "../rotas/candidaturaRouter";
 import entrevistaRouter from "../rotas/entrevistaRouter";
 import contratacoesRouter from "./contracoesRouter";
 
-const router = (app: express.Router) => {
+const router = (app: express.Application) => {
    
     app.use("/administradores", adminstradorRouter);
     app.use("/usuarios", usuarioRouter);

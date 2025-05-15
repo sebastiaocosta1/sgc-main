@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Vagas } from "../../dominio/entidades/VagaEntity";
 import InterfaceVagasRepository from "../../dominio/repositorios/interfaces/InterfaceVagaRepository";
-import { log } from "console";
 
 export default class VagasController {
     constructor(private repository: InterfaceVagasRepository) { }
@@ -13,6 +12,8 @@ export default class VagasController {
                 salario,
                 tipo,
                 horarioExpediente,
+                hardskillsDesejadas,
+                softskillsDesejadas,
                 principaisAtividades,
                 dataPublicacao,
                 statusVaga,
@@ -20,8 +21,20 @@ export default class VagasController {
                 empresa,
             } = req.body as Vagas;
 
-
-            if (!cargo || !salario || !tipo || !horarioExpediente || !principaisAtividades || !dataPublicacao || !statusVaga || !statusCadastro || !empresa) {
+     
+            if (
+                !cargo ||
+                !salario ||
+                !tipo ||
+                !horarioExpediente ||
+                !hardskillsDesejadas ||
+                !softskillsDesejadas ||
+                !principaisAtividades ||
+                !dataPublicacao ||
+                !statusVaga ||
+                !statusCadastro ||
+                !empresa
+            ) {
                 res.status(400).json({ message: "Todos os campos obrigatórios devem ser fornecidos." });
                 return;
             }
@@ -31,8 +44,10 @@ export default class VagasController {
                 salario,
                 tipo,
                 horarioExpediente,
+                hardskillsDesejadas,
+                softskillsDesejadas,
                 principaisAtividades,
-                new Date(dataPublicacao),
+                dataPublicacao,
                 statusVaga,
                 statusCadastro,
                 empresa
@@ -82,6 +97,8 @@ export default class VagasController {
                 salario,
                 tipo,
                 horarioExpediente,
+                hardskillsDesejadas,
+                softskillsDesejadas,
                 principaisAtividades,
                 dataPublicacao,
                 statusVaga,
@@ -94,6 +111,8 @@ export default class VagasController {
                 salario,
                 tipo,
                 horarioExpediente,
+                hardskillsDesejadas,
+                softskillsDesejadas,
                 principaisAtividades,
                 dataPublicacao: new Date(dataPublicacao),
                 statusVaga,
@@ -117,6 +136,7 @@ export default class VagasController {
             res.status(500).json({ message: "Erro interno do servidor." });
         }
     }
+
 
     async deletaVaga(req: Request, res: Response): Promise<void> {
         try {
