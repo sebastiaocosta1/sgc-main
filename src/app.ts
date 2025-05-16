@@ -1,7 +1,7 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, Application } from "express";
 import { AppDataSource } from "./infraestrutura/config/dataSource";
 import router from "./apresentacao/rotas";
-import cors = require("cors");
+import cors from "cors";
 import path from "path";
 import { Empresa } from "./dominio/entidades/EmpresaEntity";
 import { Academico } from "./dominio/entidades/AcademicoEntity";
@@ -18,11 +18,11 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-const app = express();
+const app: Application = express();
 app.use("/curriculos", express.static(path.join(__dirname, "..", "curriculos")));
 app.use(express.json());
 app.use(cors(corsOptions));
-router(app);
+app.use(router);
 
 AppDataSource.initialize()
   .then(() => {
@@ -35,7 +35,7 @@ AppDataSource.initialize()
 const EMAIL_USER = 'scostadasilva584@gmail.com';
 const EMAIL_PASS = 'mdto ifyj nwpe dsui';
 
-app.post('/enviar-email', async (req, res) => {
+app.post('/enviar-email', async (req: Request, res: Response) => {
   const { para, assunto, mensagem } = req.body;
 
   if (!para || !assunto || !mensagem) {

@@ -5,8 +5,9 @@
     "outDir": "./build",    
     "noEmitOnError": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
-    
+    "experimentalDecorators": true,
+    "strict": true,
+    "moduleResolution": "node"    
   },
   "include": ["./src/**/*", "./server.ts"]
 }
